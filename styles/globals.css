@@ -1,0 +1,732 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  @apply bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200;
+}
+
+a {
+  @apply text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* ===================================
+   CUSTOM UTILITY CLASSES
+   =================================== */
+
+/* Card Styles */
+.card {
+  @apply mb-5 block rounded-lg border border-gray-200 dark:border-gray-700 shadow-md bg-white dark:bg-gray-800;
+}
+
+/* Button Styles */
+.primary-button {
+  @apply rounded-lg bg-primary-600 py-2.5 px-5 shadow-md outline-none hover:bg-primary-700 active:bg-primary-800 text-white font-semibold transition-colors duration-200;
+}
+
+.secondary-button {
+  @apply rounded-lg bg-secondary-500 py-2.5 px-5 shadow-md outline-none hover:bg-secondary-600 active:bg-secondary-700 text-white font-semibold transition-colors duration-200;
+}
+
+.success-button {
+  @apply rounded-lg bg-success-500 py-2.5 px-5 shadow-md outline-none hover:bg-success-600 active:bg-success-700 text-white font-semibold transition-colors duration-200;
+}
+
+.danger-button {
+  @apply rounded-lg bg-danger-500 py-2.5 px-5 shadow-md outline-none hover:bg-danger-600 active:bg-danger-700 text-white font-semibold transition-colors duration-200;
+}
+
+.default-button {
+  @apply rounded-lg bg-gray-100 dark:bg-gray-700 py-2.5 px-5 text-gray-700 dark:text-gray-200 shadow-md outline-none hover:bg-gray-200 dark:hover:bg-gray-600 active:bg-gray-300 dark:active:bg-gray-500 font-semibold transition-colors duration-200;
+}
+
+.outline-button {
+  @apply rounded-lg border-2 border-primary-600 dark:border-primary-400 py-2 px-5 text-primary-600 dark:text-primary-400 outline-none hover:bg-primary-50 dark:hover:bg-primary-900/20 active:bg-primary-100 dark:active:bg-primary-900/30 font-semibold transition-colors duration-200;
+}
+
+/* Alert Styles */
+.alert-error {
+  @apply my-3 rounded-lg bg-danger-50 dark:bg-danger-900/20 border border-danger-200 dark:border-danger-800 p-4 text-danger-700 dark:text-danger-300 font-medium;
+}
+
+.alert-success {
+  @apply my-3 rounded-lg bg-success-50 dark:bg-success-900/20 border border-success-200 dark:border-success-800 p-4 text-success-700 dark:text-success-300 font-medium;
+}
+
+.alert-warning {
+  @apply my-3 rounded-lg bg-warning-50 dark:bg-warning-900/20 border border-warning-200 dark:border-warning-800 p-4 text-warning-700 dark:text-warning-300 font-medium;
+}
+
+.alert-info {
+  @apply my-3 rounded-lg bg-info-50 dark:bg-info-900/20 border border-info-200 dark:border-info-800 p-4 text-info-700 dark:text-info-300 font-medium;
+}
+
+/* Badge Styles */
+.badge-primary {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-primary-100 dark:bg-primary-900/30 text-primary-800 dark:text-primary-300;
+}
+
+.badge-secondary {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-secondary-100 dark:bg-secondary-900/30 text-secondary-800 dark:text-secondary-300;
+}
+
+.badge-success {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-success-100 dark:bg-success-900/30 text-success-800 dark:text-success-300;
+}
+
+.badge-danger {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-danger-100 dark:bg-danger-900/30 text-danger-800 dark:text-danger-300;
+}
+
+.badge-warning {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-warning-100 dark:bg-warning-900/30 text-warning-800 dark:text-warning-300;
+}
+
+.badge-info {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-info-100 dark:bg-info-900/30 text-info-800 dark:text-info-300;
+}
+
+/* Form Input Styles */
+input,
+select,
+textarea {
+  @apply rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-2.5 outline-none ring-primary-300 dark:ring-primary-600 focus:ring-2 focus:border-primary-500 dark:focus:border-primary-400 transition-all duration-200;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  @apply bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed;
+}
+
+/* Loading Spinner */
+.spinner {
+  border: 3px solid rgba(79, 70, 229, 0.1);
+  border-left-color: #4F46E5;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Dropdown Styles */
+.dropdown-link {
+  @apply flex p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors duration-150;
+}
+
+/* Gradient Backgrounds */
+.gradient-primary {
+  @apply bg-gradient-to-r from-primary-600 to-primary-700;
+}
+
+.gradient-secondary {
+  @apply bg-gradient-to-r from-secondary-500 to-secondary-600;
+}
+
+.gradient-success {
+  @apply bg-gradient-to-r from-success-500 to-success-600;
+}
+
+.gradient-hero {
+  @apply bg-gradient-to-br from-primary-600 via-primary-700 to-primary-800;
+}
+
+/* Deal/Sale Styles */
+.deal-badge {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-secondary-500 text-white shadow-md;
+}
+
+.hot-deal {
+  @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-bold bg-gradient-to-r from-danger-500 to-secondary-500 text-white shadow-md animate-pulse;
+}
+
+/* Stock Status Styles */
+.in-stock {
+  @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-success-100 dark:bg-success-900/30 text-success-700 dark:text-success-300;
+}
+
+.low-stock {
+  @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-warning-100 dark:bg-warning-900/30 text-warning-700 dark:text-warning-300;
+}
+
+.out-of-stock {
+  @apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-danger-100 dark:bg-danger-900/30 text-danger-700 dark:text-danger-300;
+}
+
+/* Hover Effects */
+.hover-lift {
+  @apply transition-transform duration-200 hover:-translate-y-1 hover:shadow-lg;
+}
+
+.hover-scale {
+  @apply transition-transform duration-200 hover:scale-105;
+}
+
+/* Section Styles */
+.section-title {
+  @apply text-2xl md:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6;
+}
+
+.section-subtitle {
+  @apply text-lg text-gray-600 dark:text-gray-400 mb-4;
+}
+
+/* Trust Badge Styles */
+.trust-badge {
+  @apply flex flex-col items-center p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200;
+}
+
+/* Smooth Transitions */
+.smooth-transition {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+/* Focus Visible (Accessibility) */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-primary-500 dark:outline-primary-400;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-600 rounded-full hover:bg-gray-400 dark:hover:bg-gray-500;
+}
+
+/* Selection Color */
+::selection {
+  @apply bg-primary-200 dark:bg-primary-800 text-primary-900 dark:text-primary-100;
+}
+
+::-moz-selection {
+  @apply bg-primary-200 dark:bg-primary-800 text-primary-900 dark:text-primary-100;
+}
+
+/* ===================================
+   SCREEN READER OPTIMIZATION
+   =================================== */
+
+/* Screen reader only text - visually hidden but accessible to screen readers */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip to main content link - visible on focus */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #4F46E5;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 100;
+  font-weight: 600;
+  border-radius: 0 0 4px 0;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Ensure interactive elements are keyboard accessible */
+button:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #4F46E5;
+  outline-offset: 2px;
+}
+
+/* Improve focus visibility for keyboard navigation */
+*:focus-visible {
+  outline: 3px solid #4F46E5;
+  outline-offset: 2px;
+}
+
+/* ===================================
+   MEGA MENU STYLES
+   =================================== */
+
+/* Mega Menu Animation */
+.mega-menu-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.mega-menu-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+
+.mega-menu-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mega-menu-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 150ms ease-in, transform 150ms ease-in;
+}
+
+/* Mega Menu Hover Effects */
+.mega-menu-category:hover {
+  @apply bg-primary-50 dark:bg-primary-900/20;
+}
+
+.mega-menu-category.active {
+  @apply bg-primary-600 text-white;
+}
+
+/* Mega Menu Subcategory Links */
+.mega-menu-subcategory {
+  @apply text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-150;
+}
+
+.mega-menu-subcategory:hover {
+  @apply translate-x-1;
+}
+
+/* Mega Menu Featured Section */
+.mega-menu-featured {
+  @apply bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/20 dark:to-primary-800/20;
+}
+
+/* Mega Menu Shadow */
+.mega-menu-shadow {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Mega Menu Backdrop */
+.mega-menu-backdrop {
+  @apply fixed inset-0 bg-black/20 backdrop-blur-sm z-40;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* ===================================
+   STICKY HEADER STYLES
+   =================================== */
+
+/* Sticky Header */
+.sticky-header {
+  @apply sticky top-0 z-40 bg-white dark:bg-gray-900 transition-all duration-300;
+}
+
+.sticky-header.scrolled {
+  @apply shadow-lg;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Header slide down animation */
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.header-slide-down {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* ===================================
+   BREADCRUMB STYLES
+   =================================== */
+
+/* Breadcrumb Navigation */
+.breadcrumb {
+  @apply flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400;
+}
+
+.breadcrumb-item {
+  @apply flex items-center gap-2;
+}
+
+.breadcrumb-link {
+  @apply text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200;
+}
+
+.breadcrumb-link:hover {
+  @apply underline;
+}
+
+.breadcrumb-current {
+  @apply text-gray-900 dark:text-gray-100 font-medium;
+}
+
+.breadcrumb-separator {
+  @apply text-gray-400 dark:text-gray-600;
+}
+
+/* Breadcrumb with background */
+.breadcrumb-container {
+  @apply bg-gray-50 dark:bg-gray-800/50 rounded-lg px-4 py-2 mb-4;
+}
+
+/* Responsive breadcrumb */
+@media (max-width: 640px) {
+  .breadcrumb {
+    @apply text-xs;
+  }
+}
+
+/* ===================================
+   SKELETON LOADER STYLES
+   =================================== */
+
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  animation: shimmer 2s infinite;
+}
+
+/* Dark mode shimmer */
+.dark .shimmer::after {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Pulse Animation (alternative to shimmer) */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.skeleton-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Skeleton Base Styles */
+.skeleton {
+  @apply bg-gray-200 dark:bg-gray-700 rounded;
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.skeleton-text {
+  @apply h-4 bg-gray-200 dark:bg-gray-700 rounded;
+}
+
+.skeleton-circle {
+  @apply bg-gray-200 dark:bg-gray-700 rounded-full;
+}
+
+.skeleton-button {
+  @apply h-10 bg-gray-200 dark:bg-gray-700 rounded-lg;
+}
+
+/* Wave Animation (another alternative) */
+@keyframes wave {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-wave {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 25%,
+    #e0e0e0 50%,
+    #f0f0f0 75%
+  );
+  background-size: 200% 100%;
+  animation: wave 1.5s ease-in-out infinite;
+}
+
+.dark .skeleton-wave {
+  background: linear-gradient(
+    90deg,
+    #374151 25%,
+    #4b5563 50%,
+    #374151 75%
+  );
+  background-size: 200% 100%;
+}
+
+/* ===================================
+   ROUTE LOADING INDICATOR
+   =================================== */
+
+/* Progress Bar Animation */
+@keyframes progress-bar {
+  0% {
+    width: 0%;
+  }
+  50% {
+    width: 70%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.animate-progress-bar {
+  animation: progress-bar 2s ease-in-out;
+  width: 100%;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Bounce Animation */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.5rem);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* Slow Bounce for Shopping Bag */
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-1rem);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2s ease-in-out infinite;
+}
+
+/* Slow Spin */
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+/* Reverse Spin */
+.animate-spin-reverse {
+  animation: spin 2s linear infinite reverse;
+}
+
+/* Slow Pulse */
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
+}
+
+
+/* ===================================
+   HERO CAROUSEL ANIMATIONS
+   =================================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-300 {
+  animation-delay: 0.3s;
+}
+
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-600 {
+  animation-delay: 0.6s;
+}
+
+.animation-delay-800 {
+  animation-delay: 0.8s;
+}
+
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+
+.animation-delay-1200 {
+  animation-delay: 1.2s;
+}
+
+/* Smooth slide transition for carousel */
+.hero-carousel .slide {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Blinking animation for discount badge */
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.animate-blink {
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+/* Slide in from left animation for promotional badges */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+/* Flash animation for special offers */
+@keyframes flash {
+  0%, 50%, 100% {
+    opacity: 1;
+  }
+  25%, 75% {
+    opacity: 0.4;
+  }
+}
+
+.animate-flash {
+  animation: flash 2s linear infinite;
+}
