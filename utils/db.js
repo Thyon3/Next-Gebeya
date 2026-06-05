@@ -8,7 +8,7 @@ async function connect() {
     console.log("Already connected to database");
     return;
   }
-  
+
   // Check existing connections
   if (mongoose.connections.length > 0) {
     connection.isConnected = mongoose.connections[0].readyState;
@@ -21,14 +21,17 @@ async function connect() {
       await mongoose.disconnect();
     }
   }
-  
+
   try {
     const db = await mongoose.connect(process.env.MONGODB_URL);
     console.log("New database connection established");
     connection.isConnected = db.connections[0].readyState;
   } catch (error) {
     console.error("Database connection error:", error);
-    throw error;
+    if (process.env.NODE_ENV === "production") {
+      throw error;
+    }
+    console.log("Continuing without database in development mode");
   }
 }
 
@@ -48,12 +51,12 @@ function convertDocToObj(doc) {
   doc._id = doc._id.toString();
   doc.createdAt = doc.createdAt.toString();
   doc.updatedAt = doc.updatedAt.toString();
-  
+
   // Convert flashSaleEndDate if it exists
   if (doc.flashSaleEndDate) {
     doc.flashSaleEndDate = doc.flashSaleEndDate.toString();
   }
-  
+
   return doc;
 }
 
