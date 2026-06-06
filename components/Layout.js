@@ -111,9 +111,9 @@ function Layout({ title, children, breadcrumbProps }) {
 
         <header className="z-40 bg-white dark:bg-gray-900 sticky top-0 border-b border-gray-100 dark:border-gray-800">
           {/* Main Row */}
-          <div className="max-w-[1600px] mx-auto xl:px-4 md:px-2 px-2 h-20 flex items-center justify-between gap-6">
-            <Link href="/" className="flex items-center gap-2 flex-shrink-0">
-              <span className="text-3xl font-black tracking-tighter text-gray-900 dark:text-white">eShop</span>
+          <div className="max-w-[1600px] mx-auto px-4 h-20 flex items-center justify-between gap-6">
+            <Link href="/" className="flex items-center gap-1 flex-shrink-0">
+              <span className="text-3xl font-black tracking-tighter text-black dark:text-white">eShop</span>
             </Link>
 
             <div className="flex-1 max-w-none ml-1 mr-6 hidden md:block">
@@ -126,9 +126,9 @@ function Layout({ title, children, breadcrumbProps }) {
                 <div className="p-1 border border-gray-200 dark:border-gray-700 rounded-md group-hover:border-gray-900 transition-colors">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M3 3h8v8H3zm2 2v4h4V5zm8-2h8v8h-8zm2 2v4h4V5zM3 13h8v8H3zm2 2v4h4v-4zm13-2h3v2h-3zm-3 0h2v2h-2zm3 3h3v2h-3zm-3 0h2v2h-2zm0 3h2v2h-2zm3 0h3v2h-3z" /></svg>
                 </div>
-                <div className="flex flex-col leading-tight">
-                  <span className="text-[10px] font-bold text-gray-400">Download the</span>
-                  <span className="text-[11px] font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">eShop app</span>
+                <div className="flex flex-col leading-none">
+                  <span className="text-[10px] font-medium text-gray-500">Download the</span>
+                  <span className="text-[11px] font-bold text-black dark:text-white whitespace-nowrap">eShop app</span>
                 </div>
               </div>
 
@@ -137,9 +137,9 @@ function Layout({ title, children, breadcrumbProps }) {
                 <Menu as="div" className="relative inline-block z-50">
                   <Menu.Button className="flex items-center gap-2 hover:text-blue-600 transition-colors group">
                     <div className="w-6 h-4 bg-gray-200 rounded-sm overflow-hidden flex items-center justify-center text-[10px] font-bold text-gray-400">EN</div>
-                    <div className="flex flex-col items-start leading-none">
-                      <span className="text-[11px] font-bold text-gray-900 dark:text-gray-100">EN/</span>
-                      <span className="text-[11px] font-bold text-gray-900 dark:text-gray-100 uppercase">{hasMounted ? currency : '...'}</span>
+                    <div className="flex flex-col items-start leading-none -space-y-0.5">
+                      <span className="text-[11px] font-bold text-black dark:text-white">EN/</span>
+                      <span className="text-[11px] font-bold text-black dark:text-white uppercase">{hasMounted ? currency : '...'}</span>
                     </div>
                     <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
                   </Menu.Button>
@@ -172,9 +172,9 @@ function Layout({ title, children, breadcrumbProps }) {
                           <div className="w-full h-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-400"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></div>
                         )}
                       </div>
-                      <div className="flex flex-col items-start leading-tight">
-                        <span className="text-[10px] font-bold text-gray-500">Welcome</span>
-                        <span className="text-[12px] font-bold text-gray-900 dark:text-gray-100 truncate max-w-[80px]">{session.user.name.split(' ')[0]}</span>
+                      <div className="flex flex-col items-start leading-none -space-y-0.5">
+                        <span className="text-[10px] font-medium text-gray-500">Welcome</span>
+                        <span className="text-[13px] font-bold text-black dark:text-white truncate max-w-[80px]">{session.user.name.split(' ')[0]}</span>
                       </div>
                     </Menu.Button>
                     <Menu.Items className="absolute right-0 w-64 origin-top-right p-2.5 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-700 mt-4 z-50 overflow-hidden">
@@ -205,9 +205,9 @@ function Layout({ title, children, breadcrumbProps }) {
                 ) : (
                   <Link href="/login" className="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors group">
                     <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                    <div className="flex flex-col items-start leading-tight">
-                      <span className="text-[10px] font-bold text-gray-500">Welcome</span>
-                      <span className="text-[12px] font-bold text-gray-900 dark:text-gray-100">Sign In / Register</span>
+                    <div className="flex flex-col items-start leading-none -space-y-0.5">
+                      <span className="text-[10px] font-medium text-gray-500">Welcome</span>
+                      <span className="text-[13px] font-bold text-black dark:text-white">Sign In / Register</span>
                     </div>
                   </Link>
                 )}
@@ -219,24 +219,24 @@ function Layout({ title, children, breadcrumbProps }) {
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                   <span className="absolute -top-1 -right-2 bg-gray-900 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-white dark:border-gray-950">{cartItemsCount}</span>
                 </div>
-                <span className="text-[14px] font-bold text-gray-900 dark:text-gray-100 transition-colors">Cart</span>
+                <span className="text-[14px] font-bold text-black dark:text-white transition-colors">Cart</span>
               </Link>
             </div>
           </div>
 
           {/* Bottom Nav Row */}
           <div className="hidden md:flex h-14 items-center">
-            <div className="max-w-[1600px] mx-auto xl:px-4 md:px-2 px-2 flex items-center gap-6">
-              <div className="flex items-center -ml-4">
+            <div className="max-w-[1600px] mx-auto px-4 flex items-center gap-6">
+              <div className="flex items-center">
                 <MegaMenu customTrigger={true} />
               </div>
 
-              <nav className="flex items-center gap-8 text-sm font-bold text-gray-800 dark:text-gray-200">
-                <Link href="/choice" className="text-red-500 hover:opacity-80 transition-opacity">Choice</Link>
-                <Link href="/search?sortBy=popular" className="hover:text-blue-600 transition-colors">SuperDeals</Link>
-                <Link href="/search?category=Business" className="hover:text-blue-600 transition-colors whitespace-nowrap">eShop Business</Link>
-                <Link href="/search?category=Automotive" className="hover:text-blue-600 transition-colors">Automotive</Link>
-                <Link href="/search?category=Appliances" className="hover:text-blue-600 transition-colors">Appliances</Link>
+              <nav className="flex items-center gap-10 text-[14px] font-bold text-black dark:text-white">
+                <Link href="/choice" className="text-[#ff4e50] hover:opacity-80 transition-opacity">Choice</Link>
+                <Link href="/search?sortBy=popular" className="hover:text-amber-500 transition-colors">SuperDeals</Link>
+                <Link href="/search?category=Business" className="hover:text-[#ff4e50] transition-colors whitespace-nowrap">eShop Business</Link>
+                <Link href="/search?category=Automotive" className="hover:text-[#ff4e50] transition-colors">Automotive</Link>
+                <Link href="/search?category=Appliances" className="hover:text-[#ff4e50] transition-colors">Appliances</Link>
                 <Link href="/search?category=Women's Clothing" className="hidden lg:block hover:text-blue-600 transition-colors">Women's Clothing</Link>
                 <Link href="/search?category=Men's Clothing" className="hidden xl:block hover:text-blue-600 transition-colors">Men's Clothing</Link>
                 <Link href="/search?category=Furniture" className="hidden 2xl:block hover:text-blue-600 transition-colors whitespace-nowrap">Furniture</Link>

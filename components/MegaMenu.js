@@ -67,7 +67,7 @@ export default function MegaMenu({ customTrigger = false }) {
         onMouseEnter={handleMouseEnter}
         onClick={() => setIsOpen(!isOpen)}
         className={customTrigger
-          ? "flex items-center gap-2 px-6 py-2 bg-gray-100 dark:bg-gray-800 rounded-full cursor-pointer hover:bg-gray-200 transition-colors shadow-sm"
+          ? "flex items-center gap-2 px-6 py-2 bg-gray-50 dark:bg-gray-800 rounded-full cursor-pointer hover:bg-gray-100 transition-colors shadow-sm"
           : "flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
         }
         aria-expanded={isOpen}
