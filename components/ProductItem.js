@@ -9,11 +9,11 @@ import ProductQuickView from "./ProductQuickView";
 import SimilarProducts from "./SimilarProducts";
 import LiveStockBadge from "./LiveStockBadge";
 import { useInventory } from "@/hooks/useInventory";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/utils/AuthContext";
 import { useRouter } from "next/router";
 
 export default function ProductItem({ product, addToCartHandler, allProducts }) {
-  const { data: session } = useSession();
+  const { user: session } = useAuth();
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const { currency, wishlist, compare } = state;
@@ -24,8 +24,8 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
 
   const productWithImages = {
     ...product,
-    images: Array.isArray(product.images) && product.images.length > 0 
-      ? product.images 
+    images: Array.isArray(product.images) && product.images.length > 0
+      ? product.images
       : []
   };
 
@@ -44,14 +44,14 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
 
   const toggleWishlistHandler = (e) => {
     e.preventDefault();
-    
+
     // Check if user is logged in
     if (!session) {
       toast.info("Please sign in to add items to your wishlist");
       router.push(`/login?redirect=/product/${product.slug}`);
       return;
     }
-    
+
     if (isInWishlist) {
       dispatch({ type: "WISHLIST_REMOVE_ITEM", payload: product });
       toast.success("Removed from wishlist");
@@ -86,7 +86,7 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
 
   return (
     <>
-      <article 
+      <article
         className="group relative bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 border border-gray-100 dark:border-gray-700"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
@@ -100,18 +100,17 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
               {!imageLoaded && (
                 <div className="absolute inset-0 bg-gradient-to-r from-gray-200 via-gray-300 to-gray-200 dark:from-gray-700 dark:via-gray-600 dark:to-gray-700 animate-pulse" />
               )}
-              
+
               <Image
                 src={product.image}
                 alt={`${product.name} - ${product.brand}`}
-                className={`object-cover object-top w-full h-full transition-all duration-700 group-hover:scale-110 ${
-                  imageLoaded ? 'opacity-100' : 'opacity-0'
-                }`}
+                className={`object-cover object-top w-full h-full transition-all duration-700 group-hover:scale-110 ${imageLoaded ? 'opacity-100' : 'opacity-0'
+                  }`}
                 height={400}
                 width={400}
                 onLoad={() => setImageLoaded(true)}
               />
-              
+
               {/* Gradient Overlay on Hover */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
@@ -122,9 +121,8 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
             {/* Wishlist Button */}
             <button
               onClick={toggleWishlistHandler}
-              className={`backdrop-blur-md bg-white/90 dark:bg-gray-800/90 rounded-full p-2.5 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200/50 dark:border-gray-600/50 transform hover:scale-110 ${
-                isInWishlist ? 'scale-110' : ''
-              }`}
+              className={`backdrop-blur-md bg-white/90 dark:bg-gray-800/90 rounded-full p-2.5 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200/50 dark:border-gray-600/50 transform hover:scale-110 ${isInWishlist ? 'scale-110' : ''
+                }`}
               aria-label={isInWishlist ? `Remove ${product.name} from wishlist` : `Add ${product.name} to wishlist`}
               aria-pressed={isInWishlist}
             >
@@ -134,9 +132,8 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
                 viewBox="0 0 24 24"
                 strokeWidth="2"
                 stroke={isInWishlist ? "#ef4444" : "currentColor"}
-                className={`w-5 h-5 transition-all duration-300 ${
-                  isInWishlist ? 'animate-pulse' : 'text-gray-700 dark:text-gray-300'
-                }`}
+                className={`w-5 h-5 transition-all duration-300 ${isInWishlist ? 'animate-pulse' : 'text-gray-700 dark:text-gray-300'
+                  }`}
               >
                 <path
                   strokeLinecap="round"
@@ -149,11 +146,10 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
             {/* Compare Button */}
             <button
               onClick={toggleCompareHandler}
-              className={`backdrop-blur-md rounded-full p-2.5 shadow-lg hover:shadow-xl transition-all duration-300 border transform hover:scale-110 ${
-                isInCompare 
-                  ? "bg-purple-600 border-purple-600 scale-110" 
+              className={`backdrop-blur-md rounded-full p-2.5 shadow-lg hover:shadow-xl transition-all duration-300 border transform hover:scale-110 ${isInCompare
+                  ? "bg-purple-600 border-purple-600 scale-110"
                   : "bg-white/90 dark:bg-gray-800/90 border-gray-200/50 dark:border-gray-600/50"
-              }`}
+                }`}
               aria-label={isInCompare ? `Remove ${product.name} from comparison` : `Add ${product.name} to comparison`}
               aria-pressed={isInCompare}
             >
@@ -163,9 +159,8 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
                 viewBox="0 0 24 24"
                 strokeWidth="2"
                 stroke={isInCompare ? "white" : "currentColor"}
-                className={`w-5 h-5 transition-all duration-300 ${
-                  !isInCompare ? 'text-gray-700 dark:text-gray-300' : ''
-                }`}
+                className={`w-5 h-5 transition-all duration-300 ${!isInCompare ? 'text-gray-700 dark:text-gray-300' : ''
+                  }`}
               >
                 <path
                   strokeLinecap="round"
@@ -177,9 +172,8 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
           </div>
 
           {/* Quick Action Buttons - Bottom (Visible on Hover) */}
-          <div className={`absolute bottom-0 left-0 right-0 p-3 flex gap-2 transition-all duration-500 transform ${
-            isHovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-          }`}>
+          <div className={`absolute bottom-0 left-0 right-0 p-3 flex gap-2 transition-all duration-500 transform ${isHovered ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+            }`}>
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -217,7 +211,7 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
             <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
               {product.brand}
             </span>
-            <LiveStockBadge 
+            <LiveStockBadge
               stock={stock}
               isConnected={isConnected}
               isLowStock={isLowStock}
@@ -228,8 +222,8 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
 
           {/* Product Name */}
           <Link href={`/product/${product.slug}`}>
-            <h2 
-              className="text-lg font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 line-clamp-2 min-h-[3.5rem]" 
+            <h2
+              className="text-lg font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-300 line-clamp-2 min-h-[3.5rem]"
               title={product.name}
             >
               {product.name}
@@ -244,11 +238,10 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
                 {[1, 2, 3, 4, 5].map((star) => (
                   <svg
                     key={star}
-                    className={`w-4 h-4 ${
-                      star <= Math.round(product.rating)
+                    className={`w-4 h-4 ${star <= Math.round(product.rating)
                         ? 'text-yellow-400 fill-current'
                         : 'text-gray-300 dark:text-gray-600 fill-current'
-                    }`}
+                      }`}
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 20 20"
                   >
@@ -293,11 +286,10 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
 
           {/* Add to Cart Button */}
           <button
-            className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg flex items-center justify-center gap-2 ${
-              isSoldOut
+            className={`w-full py-3 px-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-md hover:shadow-lg flex items-center justify-center gap-2 ${isSoldOut
                 ? 'bg-gray-300 dark:bg-gray-700 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                 : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white'
-            }`}
+              }`}
             type="button"
             onClick={() => addToCartHandler(product)}
             disabled={isSoldOut}
