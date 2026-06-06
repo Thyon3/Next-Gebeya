@@ -1,12 +1,11 @@
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]";
+﻿import { isAuth, isAdmin } from '@/utils/auth';
 import db from "@/utils/db";
 import Review from "@/models/Review";
 
 const handler = async (req, res) => {
-  const session = await getServerSession(req, res, authOptions);
+  let user; try { user = await isAuth(req, res); } catch(e) { return; }
 
-  if (!session || !session.user.isAdmin) {
+  if (!user || !user.isAdmin) {
     return res.status(401).json({ message: "Admin access required" });
   }
 

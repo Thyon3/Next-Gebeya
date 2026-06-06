@@ -1,12 +1,11 @@
-import { getServerSession } from 'next-auth/next';
-import { authOptions } from '../../auth/[...nextauth]';
+﻿import { isAuth, isAdmin } from '@/utils/auth';
 import SiteSettings from '@/models/SiteSettings';
 import db from '@/utils/db';
 
 const handler = async (req, res) => {
-  const session = await getServerSession(req, res, authOptions);
+  let user; try { user = await isAuth(req, res); } catch(e) { return; }
   
-  if (!session || !session.user.isAdmin) {
+  if (!user || !user.isAdmin) {
     return res.status(401).send('Admin sign in required');
   }
 
