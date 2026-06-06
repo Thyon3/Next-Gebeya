@@ -1,7 +1,7 @@
 import { Store } from "@/utils/Store";
 import { Menu } from "@headlessui/react";
 import Cookies from "js-cookie";
-import { signOut, useSession } from "next-auth/react";
+import { useAuth } from "@/utils/AuthContext";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -9,7 +9,7 @@ import React, { useContext, useState } from "react";
 
 export default function AdminLayout({ title, children }) {
   const router = useRouter();
-  const { status, data: session } = useSession();
+  const { user: session, loading: status, logout: signOut } = useAuth();
   const { state, dispatch } = useContext(Store);
   const { darkMode } = state;
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -17,7 +17,8 @@ export default function AdminLayout({ title, children }) {
   const logoutClickHandler = () => {
     Cookies.remove("cart");
     dispatch({ type: "CART_RESET" });
-    signOut({ callbackUrl: "/login" });
+    signOut();
+    router.push("/login");
   };
 
   const toggleDarkMode = () => {
@@ -239,9 +240,8 @@ export default function AdminLayout({ title, children }) {
                         {({ active }) => (
                           <Link
                             href="/profile"
-                            className={`${
-                              active ? "bg-gray-100 dark:bg-gray-700" : ""
-                            } block px-4 py-2 text-sm text-gray-700 dark:text-gray-300`}
+                            className={`${active ? "bg-gray-100 dark:bg-gray-700" : ""
+                              } block px-4 py-2 text-sm text-gray-700 dark:text-gray-300`}
                           >
                             Profile Settings
                           </Link>
@@ -253,9 +253,8 @@ export default function AdminLayout({ title, children }) {
                         {({ active }) => (
                           <button
                             onClick={logoutClickHandler}
-                            className={`${
-                              active ? "bg-gray-100 dark:bg-gray-700" : ""
-                            } block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400`}
+                            className={`${active ? "bg-gray-100 dark:bg-gray-700" : ""
+                              } block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400`}
                           >
                             Sign Out
                           </button>
@@ -271,9 +270,8 @@ export default function AdminLayout({ title, children }) {
 
         {/* Sidebar */}
         <aside
-          className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform ${
-            sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700`}
+          className={`fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700`}
         >
           <div className="h-full px-3 pb-4 overflow-y-auto">
             <ul className="space-y-2 font-medium">
@@ -283,11 +281,10 @@ export default function AdminLayout({ title, children }) {
                   <li key={item.name}>
                     <Link
                       href={item.href}
-                      className={`flex items-center p-2 rounded-lg group ${
-                        isActive
+                      className={`flex items-center p-2 rounded-lg group ${isActive
                           ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
                           : "text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                      }`}
+                        }`}
                     >
                       {item.icon}
                       <span className="ml-3">{item.name}</span>

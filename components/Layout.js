@@ -1,7 +1,7 @@
 import { Store } from "@/utils/Store";
 import { Menu } from "@headlessui/react";
 import Cookies from "js-cookie";
-import { signOut, useSession } from "next-auth/react";
+import { useAuth } from "@/utils/AuthContext";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -17,7 +17,8 @@ import { currencyMetadata, setDefaultCurrency, fetchExchangeRates } from "@/util
 
 function Layout({ title, children, breadcrumbProps }) {
   const router = useRouter();
-  const { status, data: session } = useSession();
+  const { user, loading: status, logout: signOut } = useAuth();
+  const session = user ? { user } : null;
   const { state, dispatch } = useContext(Store);
   const { cart, currency, wishlist, compare, darkMode, fontSize } = state;
 
@@ -95,15 +96,15 @@ function Layout({ title, children, breadcrumbProps }) {
         <title>{title ? `${title} - eShop` : "eShop"}</title>
         <meta name="description" content="eShop - Modern E-commerce Platform" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        
+
         {/* Favicon - Shopping Bag Icon */}
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="alternate icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/favicon.svg" />
-        
+
         {/* PWA Manifest */}
         <link rel="manifest" href="/manifest.json" />
-        
+
         {/* Theme Color */}
         <meta name="theme-color" content="#2563eb" />
       </Head>
@@ -116,12 +117,11 @@ function Layout({ title, children, breadcrumbProps }) {
 
         {/* Welcome Banner - Above Header */}
         <WelcomeBanner />
-        
-        <header 
-          role="banner" 
-          className={`sticky top-0 z-40 bg-white dark:bg-gray-900 transition-all duration-300 ${
-            isScrolled ? 'shadow-lg' : 'shadow-md'
-          }`}
+
+        <header
+          role="banner"
+          className={`sticky top-0 z-40 bg-white dark:bg-gray-900 transition-all duration-300 ${isScrolled ? 'shadow-lg' : 'shadow-md'
+            }`}
         >
           <nav className="flex h-14 justify-between items-center px-16">
             <div className="flex items-center space-x-2">
@@ -157,7 +157,7 @@ function Layout({ title, children, breadcrumbProps }) {
             <div className="hidden md:flex items-center gap-4">
               {/* Font Size Controls */}
               <Menu as="div" className="relative inline-block z-10">
-                <Menu.Button 
+                <Menu.Button
                   className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                   aria-label="Font size options"
                 >
@@ -186,11 +186,9 @@ function Layout({ title, children, breadcrumbProps }) {
                     {({ active }) => (
                       <button
                         onClick={() => changeFontSize('small')}
-                        className={`${
-                          active ? "bg-blue-50 dark:bg-blue-900/20" : ""
-                        } ${
-                          fontSize === 'small' ? "bg-blue-100 dark:bg-blue-900/30 font-semibold" : ""
-                        } w-full text-left px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-sm`}
+                        className={`${active ? "bg-blue-50 dark:bg-blue-900/20" : ""
+                          } ${fontSize === 'small' ? "bg-blue-100 dark:bg-blue-900/30 font-semibold" : ""
+                          } w-full text-left px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-sm`}
                       >
                         Small
                       </button>
@@ -200,11 +198,9 @@ function Layout({ title, children, breadcrumbProps }) {
                     {({ active }) => (
                       <button
                         onClick={() => changeFontSize('medium')}
-                        className={`${
-                          active ? "bg-blue-50 dark:bg-blue-900/20" : ""
-                        } ${
-                          fontSize === 'medium' ? "bg-blue-100 dark:bg-blue-900/30 font-semibold" : ""
-                        } w-full text-left px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-base`}
+                        className={`${active ? "bg-blue-50 dark:bg-blue-900/20" : ""
+                          } ${fontSize === 'medium' ? "bg-blue-100 dark:bg-blue-900/30 font-semibold" : ""
+                          } w-full text-left px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-base`}
                       >
                         Medium
                       </button>
@@ -214,11 +210,9 @@ function Layout({ title, children, breadcrumbProps }) {
                     {({ active }) => (
                       <button
                         onClick={() => changeFontSize('large')}
-                        className={`${
-                          active ? "bg-blue-50 dark:bg-blue-900/20" : ""
-                        } ${
-                          fontSize === 'large' ? "bg-blue-100 dark:bg-blue-900/30 font-semibold" : ""
-                        } w-full text-left px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-lg`}
+                        className={`${active ? "bg-blue-50 dark:bg-blue-900/20" : ""
+                          } ${fontSize === 'large' ? "bg-blue-100 dark:bg-blue-900/30 font-semibold" : ""
+                          } w-full text-left px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors text-lg`}
                       >
                         Large
                       </button>
@@ -272,7 +266,7 @@ function Layout({ title, children, breadcrumbProps }) {
 
               {/* Currency Selector */}
               <Menu as="div" className="relative inline-block z-10">
-                <Menu.Button 
+                <Menu.Button
                   className="flex items-center gap-1 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                   aria-label="Select currency"
                 >
@@ -319,11 +313,9 @@ function Layout({ title, children, breadcrumbProps }) {
                       {({ active }) => (
                         <button
                           onClick={() => changeCurrency(code)}
-                          className={`${
-                            active ? "bg-blue-50 dark:bg-blue-900/20" : ""
-                          } ${
-                            currency === code ? "bg-blue-100 dark:bg-blue-900/30 font-semibold" : ""
-                          } w-full text-left px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors flex items-center justify-between dark:text-gray-200`}
+                          className={`${active ? "bg-blue-50 dark:bg-blue-900/20" : ""
+                            } ${currency === code ? "bg-blue-100 dark:bg-blue-900/30 font-semibold" : ""
+                            } w-full text-left px-4 py-2 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors flex items-center justify-between dark:text-gray-200`}
                         >
                           <span>
                             {currencyMetadata[code].symbol} {code}
@@ -483,9 +475,8 @@ function Layout({ title, children, breadcrumbProps }) {
 
           <div
             id="mobile-menu"
-            className={`${
-              toggle === false ? "hidden" : ""
-            } md:hidden flex flex-col my-3 mx-3 p-2 bg-gray-50 rounded-md shadow-md`}
+            className={`${toggle === false ? "hidden" : ""
+              } md:hidden flex flex-col my-3 mx-3 p-2 bg-gray-50 rounded-md shadow-md`}
           >
             <div className="py-4 px-4 text-sm mx-auto w-full">
               <SearchAutocomplete />
