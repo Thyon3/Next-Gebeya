@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
-export default function MegaMenu() {
+export default function MegaMenu({ customTrigger = false }) {
   const [isOpen, setIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +15,7 @@ export default function MegaMenu() {
         setLoading(true);
         const response = await fetch('/api/categories/public');
         const data = await response.json();
-        
+
         if (data.success && data.categories) {
           const formattedCategories = data.categories.map((cat) => ({
             name: cat.name,
@@ -26,7 +26,7 @@ export default function MegaMenu() {
             bgColor: cat.bgColor || 'bg-blue-50 dark:bg-blue-900/20',
             description: cat.description || '',
           }));
-          
+
           setCategories(formattedCategories);
         }
       } catch (error) {
@@ -66,21 +66,22 @@ export default function MegaMenu() {
       <button
         onMouseEnter={handleMouseEnter}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
+        className={customTrigger
+          ? "flex items-center gap-2 px-6 py-2 bg-gray-100 dark:bg-gray-800 rounded-full cursor-pointer hover:bg-gray-200 transition-colors shadow-sm"
+          : "flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
+        }
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-        <span>All Categories</span>
+        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" /></svg>
+        <span className="text-sm font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">All Categories</span>
         <svg
-          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+          className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
         </svg>
       </button>
 
@@ -126,12 +127,12 @@ export default function MegaMenu() {
                       onClick={() => setIsOpen(false)}
                       className="group flex flex-col items-center justify-center p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-200 hover:shadow-md hover:-translate-y-1"
                       style={{
-                        background: category.bgColor?.includes('dark:') 
-                          ? undefined 
+                        background: category.bgColor?.includes('dark:')
+                          ? undefined
                           : category.bgColor?.replace('bg-', '').replace('-50', '-50')
                       }}
                     >
-                      <div 
+                      <div
                         className={`w-12 h-12 rounded-full bg-gradient-to-br ${category.gradient} flex items-center justify-center mb-2 text-2xl shadow-md group-hover:scale-110 transition-transform duration-200`}
                       >
                         {category.icon}

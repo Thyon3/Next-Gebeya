@@ -97,21 +97,10 @@ export default function Home({ featuredProducts = [], products = [], brands = []
         )
       )}
 
-      {/* Trust Badges */}
-      <TrustBadges />
-
-      {/* Category Showcase */}
-      <CategoryShowcase categories={categories} />
-
-      {/* Brand Showcase */}
-      {siteSettings.brandShowcaseEnabled && brands.length > 0 && (
-        <BrandShowcase brands={brands} settings={siteSettings} />
-      )}
-
-      {/* Latest Products */}
+      {/* Latest Products - Moved to top */}
       {siteSettings.latestProductsEnabled && (
-        <div className="mb-12">
-          <h1 className="text-3xl font-bold mb-6">{siteSettings.latestProductsHeading}</h1>
+        <div className="mb-12 mt-10">
+          <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">{siteSettings.latestProductsHeading}</h1>
           {isLoading ? (
             <SkeletonProductGrid count={siteSettings.latestProductsCount} />
           ) : (
@@ -128,6 +117,18 @@ export default function Home({ featuredProducts = [], products = [], brands = []
           )}
         </div>
       )}
+
+      {/* Trust Badges */}
+      <TrustBadges />
+
+      {/* Category Showcase */}
+      <CategoryShowcase categories={categories} />
+
+      {/* Brand Showcase */}
+      {siteSettings.brandShowcaseEnabled && brands.length > 0 && (
+        <BrandShowcase brands={brands} settings={siteSettings} />
+      )}
+
 
       {/* Recently Viewed Products */}
       {siteSettings.recentlyViewedEnabled && (

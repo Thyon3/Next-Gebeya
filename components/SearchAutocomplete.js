@@ -16,8 +16,13 @@ export default function SearchAutocomplete() {
   // Load recent searches from localStorage
   useEffect(() => {
     const saved = localStorage.getItem('recentSearches');
-    if (saved) {
-      setRecentSearches(JSON.parse(saved));
+    if (saved && saved !== 'undefined') {
+      try {
+        setRecentSearches(JSON.parse(saved));
+      } catch (e) {
+        console.error('Error parsing recent searches:', e);
+        localStorage.removeItem('recentSearches');
+      }
     }
   }, []);
 
@@ -99,11 +104,6 @@ export default function SearchAutocomplete() {
   return (
     <div ref={wrapperRef} className="relative w-full group">
       <form onSubmit={handleSubmit} className="relative flex items-center w-full">
-        <div className="absolute left-5 text-gray-400 group-focus-within:text-blue-600 transition-colors pointer-events-none">
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-        </div>
         <input
           type="text"
           value={query}
@@ -112,12 +112,12 @@ export default function SearchAutocomplete() {
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          className="w-full bg-gray-100 dark:bg-gray-800 border-2 border-transparent focus:border-blue-600/20 focus:bg-white dark:focus:bg-gray-700/50 rounded-2xl py-3 pl-14 pr-32 text-[15px] font-medium focus:ring-4 focus:ring-blue-600/10 dark:text-white transition-all placeholder:text-gray-400 shadow-inner"
+          className="w-full bg-white dark:bg-gray-800 border-2 border-gray-900 dark:border-gray-700 rounded-full py-2.5 pl-6 pr-16 text-[15px] font-medium transition-all placeholder:text-gray-400 focus:outline-none"
           placeholder="I'm shopping for..."
         />
         <button
           type="submit"
-          className="absolute right-2 bg-gray-900 text-white p-2 rounded-xl hover:bg-black transition-all active:scale-95 flex items-center justify-center"
+          className="absolute right-1.5 bg-gray-900 text-white p-2 rounded-full hover:bg-black transition-all active:scale-95 flex items-center justify-center w-10 h-10"
           aria-label="Search"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
