@@ -14,7 +14,11 @@ export default function Login() {
 
   useEffect(() => {
     if (user) {
-      router.push(redirect || "/");
+      if (user.isAdmin) {
+        router.push("/admin/dashboard");
+      } else {
+        router.push(redirect || "/");
+      }
     }
   }, [router, user, redirect]);
 

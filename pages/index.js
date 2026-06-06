@@ -18,11 +18,23 @@ import { useContext, useState, useEffect } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { toast } from "react-toastify";
 
+import { useAuth } from "@/utils/AuthContext";
+import { useRouter } from "next/router";
+
 export default function Home({ featuredProducts = [], products = [], brands = [], categories = [], settings: initialSettings = {} }) {
   const { state, dispatch } = useContext(Store);
+  const { user } = useAuth();
+  const router = useRouter();
   const { cart } = state;
   const [isLoading, setIsLoading] = useState(true);
   const [settings, setSettings] = useState(initialSettings);
+
+  // Redirect admin users to dashboard
+  useEffect(() => {
+    if (user && user.isAdmin) {
+      router.push("/admin/dashboard");
+    }
+  }, [user, router]);
 
   // Fetch fresh settings on mount
   useEffect(() => {
