@@ -1,11 +1,12 @@
-import { getSession } from 'next-auth/react';
+﻿import { isAuth } from '@/utils/auth';
 import Coupon from '@/models/Coupon';
 import User from '@/models/User';
 import db from '@/utils/db';
 
 const handler = async (req, res) => {
-  const session = await getSession({ req });
-  if (!session || !session.user.isAdmin) {
+  let user;
+  try { user = await isAuth(req, res); } catch (e) { return; }
+  if (!user.isAdmin) {
     return res.status(401).json({ message: 'Admin access required' });
   }
 
@@ -17,9 +18,9 @@ const handler = async (req, res) => {
         .sort({ createdAt: -1 })
         .lean();
 
-            res.status(200).json(coupons);
+      res.status(200).json(coupons);
     } catch (error) {
-            res.status(500).json({ message: 'Error fetching coupons' });
+      res.status(500).json({ message: 'Error fetching coupons' });
     }
   } else {
     res.status(405).json({ message: 'Method not allowed' });
