@@ -1,20 +1,13 @@
+﻿import { isAuth, isAdmin } from '@/utils/auth';
 import Order from "@/models/Order";
 import Product from "@/models/Product";
 import db from "@/utils/db";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]";
 import { emitStockUpdate, emitProductSoldOut, emitLowStockAlert } from "@/utils/socket";
 
 const handler = async (req, res) => {
-  const session = await getServerSession(req, res, authOptions);
-  
-  if (!session) {
-    return res.status(401).send("Sign in required");
-  }
-
-  const { user } = session;
-  
-  await db.connect();
+  let user;
+try { user = await isAuth(req, res); } catch(e) { return; }
+await db.connect();
   
   try {
     const newOrder = new Order({
