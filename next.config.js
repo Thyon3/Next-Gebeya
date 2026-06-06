@@ -6,6 +6,7 @@ const nextConfig = {
       "res.cloudinary.com",
       "www.w3.org",
       "images.unsplash.com",
+      "unsplash.com",
       "cdn.worldvectorlogo.com",
       "cdn.cdnlogo.com",
       "upload.wikimedia.org",

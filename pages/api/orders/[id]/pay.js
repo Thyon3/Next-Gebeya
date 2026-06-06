@@ -5,24 +5,26 @@ import db from "@/utils/db";
 const handler = async (req, res) => {
   let user;
 try { user = await isAuth(req, res); } catch(e) { return; }
-if (!user.isAdmin) { return res.status(401).send({ message: 'Admin sign in required' }); }
   await db.connect();
   
   const order = await Order.findById(req.query.id);
   
   if (order) {
+    if (order.isPaid) {
+      return res.status(400).send({ message: "Order is already paid" });
+    }
+    
     order.isPaid = true;
     order.paidAt = Date.now();
     order.paymentResult = {
-      id: `ADMIN-${Date.now()}`,
-      status: "COMPLETED",
-      email_address: user.email,
+      id: req.body.id,
+      status: req.body.status,
+      email_address: req.body.email_address,
     };
+    
     const paidOrder = await order.save();
-    res.send({
-      message: "Order marked as paid successfully",
-      order: paidOrder,
-    });
+    
+    res.send({ message: "Order paid successfully", order: paidOrder });
   } else {
     res.status(404).send({ message: "Order not found" });
   }

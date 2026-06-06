@@ -133,13 +133,13 @@ MIT License - see [LICENSE](LICENSE) file
 
 ## 👨‍💻 Developer
 
-**Aklilu Mengesha**
+**Asnake Mengesha**
 
 ## 📧 Contact Developer
 
 For questions, support, or collaboration:
-- Email: [aklilumengesha57@gmail.com](mailto:aklilumengesha57@gmail.com)
-- GitHub: [@aklilumengesha](https://github.com/aklilumengesha)
+- Email: [asnakemengesha80@gmail.com](mailto:asnakemengesha80@gmail.com)
+- GitHub: [@Thyon3](https://github.com/Thyon3)
 
 ---
 

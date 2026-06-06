@@ -4,22 +4,22 @@ import { toast } from "react-toastify";
 import { getError } from "@/utils/error";
 import axios from "axios";
 import Head from "next/head";
-import { signIn } from "next-auth/react";
+import { useAuth } from "@/utils/AuthContext";
 
 export default function VerifyEmail() {
+  const { login } = useAuth();
   const router = useRouter();
   const { email, password } = router.query;
-  
+
   const [verificationCode, setVerificationCode] = useState(["", "", "", "", "", ""]);
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
   const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
-    if (!email) {
-      router.push("/register");
-    }
-  }, [email, router]);
+    // Email verification skipped
+    router.push("/");
+  }, [router]);
 
   useEffect(() => {
     if (countdown > 0) {
@@ -55,12 +55,11 @@ export default function VerifyEmail() {
 
   const handlePaste = (e) => {
     e.preventDefault();
-    // Get pasted data and clean it (remove spaces, newlines, etc.)
     const pastedData = e.clipboardData.getData("text")
       .replace(/\s/g, '') // Remove all whitespace
       .replace(/\D/g, '') // Remove all non-digits
       .slice(0, 6); // Take only first 6 digits
-    
+
     if (!pastedData) {
       return;
     }
@@ -70,8 +69,7 @@ export default function VerifyEmail() {
       newCode.push("");
     }
     setVerificationCode(newCode);
-    
-    // Focus last filled input or last input if all filled
+
     const lastIndex = Math.min(pastedData.length - 1, 5);
     setTimeout(() => {
       document.getElementById(`code-${lastIndex}`)?.focus();
@@ -80,7 +78,6 @@ export default function VerifyEmail() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Clean the code by removing any spaces or non-digit characters
     const code = verificationCode.join("").replace(/\D/g, '');
 
     if (code.length !== 6) {
@@ -100,17 +97,12 @@ export default function VerifyEmail() {
 
       // Auto-login after verification
       if (password) {
-        const result = await signIn("credentials", {
-          redirect: false,
-          email,
-          password,
-        });
-
-        if (result.error) {
-          toast.error(result.error);
-          router.push("/login");
-        } else {
+        try {
+          await login(email, password);
           router.push("/");
+        } catch (loginErr) {
+          toast.error("Auto-login failed. Please login manually.");
+          router.push("/login");
         }
       } else {
         router.push("/login");
@@ -118,9 +110,8 @@ export default function VerifyEmail() {
     } catch (err) {
       const error = getError(err);
       toast.error(error);
-      
+
       if (err.response?.data?.expired) {
-        // Code expired, allow resend
         setCountdown(0);
       }
     } finally {

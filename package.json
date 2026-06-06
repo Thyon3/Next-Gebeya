@@ -19,6 +19,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.3",
     "mongoose": "^8.9.3",
     "next": "^15.1.6",
     "next-auth": "^4.24.11",

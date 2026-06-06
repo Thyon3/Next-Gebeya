@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { signIn, useSession } from "next-auth/react";
+import { useAuth } from "@/utils/AuthContext";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { getError } from "@/utils/error";
@@ -8,7 +8,7 @@ import Head from "next/head";
 import Layout from "@/components/Layout";
 
 export default function Profile() {
-  const { data: session, update } = useSession();
+  const { user: session, updateProfile: update } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [showPasswordFields, setShowPasswordFields] = useState(false);
   const [profileImage, setProfileImage] = useState("");
@@ -51,19 +51,19 @@ export default function Profile() {
     try {
       // Check if Cloudinary is configured
       const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-      
+
       if (cloudName && cloudName.trim() !== '') {
         // Use Cloudinary with signed upload
         try {
           const { data: signData } = await axios.get("/api/auth/cloudinary-sign");
-          
+
           const bodyFormData = new FormData();
           bodyFormData.append("file", file);
           bodyFormData.append("signature", signData.signature);
           bodyFormData.append("timestamp", signData.timestamp);
           bodyFormData.append("api_key", signData.apiKey);
           bodyFormData.append("folder", "profile-images");
-          
+
           const { data } = await axios.post(
             `https://api.cloudinary.com/v1_1/${signData.cloudName}/image/upload`,
             bodyFormData
@@ -143,7 +143,7 @@ export default function Profile() {
       if (result.error) {
         toast.error(result.error);
       }
-      
+
       setShowPasswordFields(false);
       setValue("password", "");
       setValue("confirmPassword", "");
@@ -237,7 +237,7 @@ export default function Profile() {
                     <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
                       Personal Details
                     </h3>
-                    
+
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
                         Full Name
@@ -457,7 +457,7 @@ export default function Profile() {
                     </div>
                     <span className="text-xs text-green-600 font-semibold">Active</span>
                   </div>
-                  
+
                   <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                     <div className="flex items-center">
                       <svg className="w-5 h-5 text-blue-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -484,7 +484,7 @@ export default function Profile() {
                     </svg>
                     <span className="text-sm font-medium text-gray-700 group-hover:text-indigo-600">Order History</span>
                   </a>
-                  
+
                   <a
                     href="/wishlist"
                     className="flex items-center p-3 rounded-lg hover:bg-gray-50 transition-colors group"
