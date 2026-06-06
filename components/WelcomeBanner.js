@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
+import { useState, useEffect } from 'react';
+import { useAuth } from '@/utils/AuthContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
 export default function WelcomeBanner() {
-  const { data: session } = useSession();
+  const { user } = useAuth();
+  const session = user ? { user } : null;
   const [coupon, setCoupon] = useState(null);
   const [showBanner, setShowBanner] = useState(false);
   const [copied, setCopied] = useState(false);
   const [debugInfo, setDebugInfo] = useState('Loading...');
 
   useEffect(() => {
-    if (session?.user) {
+    if (user) {
       fetchUserCoupon();
     } else {
       setDebugInfo('Not logged in');
     }
-  }, [session]);
+  }, [user]);
 
   const fetchUserCoupon = async () => {
     try {
