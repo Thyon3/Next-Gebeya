@@ -1,48 +1,40 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function MegaMenu({ customTrigger = false }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [megaData, setMegaData] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const menuRef = useRef(null);
   const timeoutRef = useRef(null);
 
-  // Fetch categories from API
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchMegaData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/categories/public');
-        const data = await response.json();
+        const response = await fetch('/api/categories/megamenu');
+        const result = await response.json();
 
-        if (data.success && data.categories) {
-          const formattedCategories = data.categories.map((cat) => ({
-            name: cat.name,
-            slug: cat.slug || cat.name.toLowerCase().replace(/\s+/g, '-'),
-            count: cat.productCount,
-            icon: cat.icon || '📦',
-            gradient: cat.gradient || 'from-blue-500 to-cyan-500',
-            bgColor: cat.bgColor || 'bg-blue-50 dark:bg-blue-900/20',
-            description: cat.description || '',
-          }));
-
-          setCategories(formattedCategories);
+        if (result.success && result.data) {
+          setMegaData(result.data);
+          if (result.data.length > 0) {
+            setActiveCategory(result.data[0]);
+          }
         }
       } catch (error) {
-        console.error('Error fetching categories:', error);
+        console.error('Error fetching mega menu data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchCategories();
+    fetchMegaData();
   }, []);
 
   const handleMouseEnter = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
     setIsOpen(true);
   };
 
@@ -52,13 +44,9 @@ export default function MegaMenu({ customTrigger = false }) {
     }, 200);
   };
 
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
+  const categoryMouseEnter = (cat) => {
+    setActiveCategory(cat);
+  };
 
   return (
     <div className="relative" ref={menuRef}>
@@ -71,120 +59,75 @@ export default function MegaMenu({ customTrigger = false }) {
           : "flex items-center gap-2 px-4 py-2 text-gray-700 dark:text-gray-200 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
         }
         aria-expanded={isOpen}
-        aria-haspopup="true"
       >
         <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" /></svg>
         <span className="text-sm font-bold text-gray-900 dark:text-gray-100 whitespace-nowrap">All Categories</span>
-        <svg
-          className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
-        </svg>
+        <svg className={`w-3 h-3 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
       </button>
 
-      {/* Mega Menu Dropdown */}
+      {/* Mega Menu Content */}
       {isOpen && (
         <div
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className="absolute left-0 top-full mt-2 w-screen max-w-4xl bg-white dark:bg-gray-800 shadow-2xl rounded-lg border border-gray-200 dark:border-gray-700 z-50 animate-fadeIn"
+          className="absolute left-0 top-full mt-2 w-[1100px] bg-white dark:bg-gray-900 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-800 z-[100] flex overflow-hidden animate-fadeIn"
         >
-          <div className="p-6">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-4 flex items-center gap-2">
-              <svg className="w-5 h-5 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-              </svg>
-              Browse All Categories
-            </h3>
+          {/* Left Sidebar: Category List */}
+          <div className="w-[280px] bg-white dark:bg-gray-900 border-r border-gray-50 dark:border-gray-800 py-4 max-h-[600px] overflow-y-auto custom-scrollbar">
+            {megaData.map((cat, index) => (
+              <div
+                key={index}
+                onMouseEnter={() => categoryMouseEnter(cat)}
+                className={`flex items-center justify-between px-6 py-3 cursor-pointer transition-colors ${activeCategory?.name === cat.name ? 'bg-gray-50 dark:bg-gray-800 text-blue-600' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+              >
+                <div className="flex items-center gap-3">
+                  <span className="text-lg">{cat.icon}</span>
+                  <span className="text-[13px] font-bold">{cat.name}</span>
+                </div>
+                <svg className="w-3 h-3 text-gray-300" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" /></svg>
+              </div>
+            ))}
+          </div>
 
-            {loading ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="h-20 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-                  </div>
-                ))}
-              </div>
-            ) : categories.length === 0 ? (
-              <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                <svg className="w-16 h-16 mx-auto mb-3 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                </svg>
-                <p className="text-sm font-medium">No categories found</p>
-                <p className="text-xs mt-1">Add products to see categories here</p>
-              </div>
-            ) : (
-              <>
-                {/* Categories Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-4">
-                  {categories.map((category) => (
-                    <Link
-                      key={category.slug}
-                      href={`/search?category=${encodeURIComponent(category.name)}`}
-                      onClick={() => setIsOpen(false)}
-                      className="group flex flex-col items-center justify-center p-4 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-primary-300 dark:hover:border-primary-600 transition-all duration-200 hover:shadow-md hover:-translate-y-1"
-                      style={{
-                        background: category.bgColor?.includes('dark:')
-                          ? undefined
-                          : category.bgColor?.replace('bg-', '').replace('-50', '-50')
-                      }}
-                    >
-                      <div
-                        className={`w-12 h-12 rounded-full bg-gradient-to-br ${category.gradient} flex items-center justify-center mb-2 text-2xl shadow-md group-hover:scale-110 transition-transform duration-200`}
-                      >
-                        {category.icon}
-                      </div>
-                      <span className="text-sm font-semibold text-gray-900 dark:text-gray-100 text-center group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                        {category.name}
-                      </span>
-                      <span className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        {category.count} {category.count === 1 ? 'item' : 'items'}
-                      </span>
-                    </Link>
-                  ))}
+          {/* Right Panel: Content */}
+          <div className="flex-1 bg-white dark:bg-gray-900 p-8 min-h-[500px]">
+            {activeCategory && (
+              <div className="animate-slideUpFast">
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-50 dark:border-gray-800">
+                  <h2 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tight">{activeCategory.name}</h2>
+                  <Link href={`/search?category=${activeCategory.name}`} className="text-sm font-bold text-blue-600 hover:underline">View All</Link>
                 </div>
 
-                {/* Quick Links */}
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-                  <div className="flex flex-wrap items-center justify-center gap-4 text-sm">
-                    <Link
-                      href="/search?sortBy=newest"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      New Arrivals
-                    </Link>
-                    <span className="text-gray-300 dark:text-gray-600">|</span>
-                    <Link
-                      href="/search?sortBy=popular"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 font-medium transition-colors"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                      </svg>
-                      Trending
-                    </Link>
-                    <span className="text-gray-300 dark:text-gray-600">|</span>
-                    <Link
-                      href="/search"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-2 text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold transition-colors"
-                    >
-                      View All Products
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                      </svg>
-                    </Link>
+                {/* Featured Products Part */}
+                <div className="mb-10">
+                  <h3 className="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-6">Recommended for you</h3>
+                  <div className="grid grid-cols-5 gap-6">
+                    {activeCategory.products && activeCategory.products.map((prod, idx) => (
+                      <Link href={`/product/${prod.slug}`} key={idx} className="group flex flex-col gap-3">
+                        <div className="aspect-square relative bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-100 dark:border-gray-700 group-hover:shadow-lg transition-all p-2">
+                          <Image src={prod.image} alt={prod.name} fill className="object-contain p-1 group-hover:scale-110 transition-transform duration-500" />
+                          <div className="absolute top-2 right-2 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md px-1.5 py-0.5 rounded-md text-[10px] font-bold shadow-sm">
+                            ${prod.price}
+                          </div>
+                        </div>
+                        <p className="text-[11px] font-bold text-gray-700 dark:text-gray-300 line-clamp-2 group-hover:text-blue-600 transition-colors leading-relaxed h-[34px]">{prod.name}</p>
+                      </Link>
+                    ))}
                   </div>
                 </div>
-              </>
+
+                {/* Shop By Brand Section */}
+                <div>
+                  <h3 className="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-6">Shop by Brand</h3>
+                  <div className="flex flex-wrap gap-3">
+                    {Array.from(new Set(activeCategory.products.map(p => p.brand))).filter(b => b).map((brand, bIdx) => (
+                      <Link href={`/search?brand=${brand}`} key={bIdx} className="px-5 py-2.5 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl border border-gray-100 dark:border-gray-700 transition-all text-[12px] font-bold text-gray-900 dark:text-gray-100 shadow-sm hover:shadow-md">
+                        {brand}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
             )}
           </div>
         </div>
