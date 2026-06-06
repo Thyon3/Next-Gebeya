@@ -1,23 +1,23 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { signIn, useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { getError } from "@/utils/error";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Head from "next/head";
+import { useAuth } from "@/utils/AuthContext";
 
 export default function Register() {
-  const { data: session } = useSession();
+  const { user } = useAuth();
   const router = useRouter();
   const { redirect } = router.query;
 
   useEffect(() => {
-    if (session?.user) {
+    if (user) {
       router.push(redirect || "/");
     }
-  }, [router, session, redirect]);
+  }, [router, user, redirect]);
 
   const {
     register,
@@ -34,38 +34,27 @@ export default function Register() {
         password,
       });
 
+      /* // Verification skipped
       if (data.requiresVerification) {
         toast.success(data.message);
-        // Redirect to verification page with email and password
         router.push({
           pathname: "/verify-email",
           query: { email, password },
         });
       } else {
-        // Fallback: auto-login if verification not required
-        const result = await signIn("credentials", {
-          redirect: false,
-          email,
-          password,
-        });
-
-        if (result.error) {
-          toast.error(result.error);
-        }
+        toast.success("Account created! Please login.");
+        router.push("/login");
       }
+      */
+      toast.success("Account created successfully! Please login.");
+      router.push("/login");
     } catch (err) {
       toast.error(getError(err));
     }
   };
 
   const handleSocialSignup = async (provider) => {
-    try {
-      await signIn(provider, {
-        callbackUrl: redirect || "/",
-      });
-    } catch (error) {
-      toast.error(getError(error));
-    }
+    toast.info(`Social signup with ${provider} is currently disabled. Please use email.`);
   };
 
   return (

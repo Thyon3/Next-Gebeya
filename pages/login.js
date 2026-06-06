@@ -1,22 +1,22 @@
 import Link from "next/link";
-import { signIn, useSession } from "next-auth/react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { getError } from "@/utils/error";
 import { toast } from "react-toastify";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { useAuth } from "@/utils/AuthContext";
 
 export default function Login() {
-  const { data: session } = useSession();
+  const { user, login } = useAuth();
   const router = useRouter();
   const { redirect } = router.query;
 
   useEffect(() => {
-    if (session?.user) {
+    if (user) {
       router.push(redirect || "/");
     }
-  }, [router, session, redirect]);
+  }, [router, user, redirect]);
 
   const {
     register,
@@ -26,28 +26,14 @@ export default function Login() {
 
   const submitHandler = async ({ email, password }) => {
     try {
-      const result = await signIn("credentials", {
-        redirect: false,
-        email,
-        password,
-      });
-
-      if (result.error) {
-        toast.error(result.error);
-      }
+      await login(email, password);
     } catch (error) {
       toast.error(getError(error));
     }
   };
 
   const handleSocialLogin = async (provider) => {
-    try {
-      await signIn(provider, {
-        callbackUrl: redirect || "/",
-      });
-    } catch (error) {
-      toast.error(getError(error));
-    }
+    toast.info(`Social login with ${provider} is currently disabled. Please use email.`);
   };
 
   return (

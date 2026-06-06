@@ -42,20 +42,22 @@ async function handler(req, res) {
     // Check if user already exists
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
-            return res.status(422).json({ message: "User already exists!" });
+      return res.status(422).json({ message: "User already exists!" });
     }
 
     // Hash password
     const hashedPassword = bcryptjs.hashSync(password, 12);
 
-    // Generate verification code (expires in 10 minutes)
+    // Generate verification code (expires in 10 minutes) - SKIPPED
+    /* 
     const verificationCode = generateVerificationCode();
     const verificationCodeExpiry = new Date(Date.now() + 10 * 60 * 1000);
+    */
 
     // Generate unique welcome coupon code
     let couponCode;
     let isUnique = false;
-    
+
     while (!isUnique) {
       couponCode = generateWelcomeCouponCode();
       const existingCoupon = await Coupon.findOne({ code: couponCode });
@@ -64,22 +66,41 @@ async function handler(req, res) {
       }
     }
 
-    // Create new user (not verified yet)
+    // Create new user (verified automatically)
     const newUser = new User({
       name,
       email,
       password: hashedPassword,
       isAdmin: false,
-      isEmailVerified: false,
-      verificationCode,
-      verificationCodeExpiry,
+      isEmailVerified: true, // Automatically verify
+      verificationCode: null,
+      verificationCodeExpiry: null,
       welcomeCouponCode: couponCode,
       welcomeCouponUsed: false,
     });
 
     const user = await newUser.save();
 
-    // Send verification email
+    // Create welcome coupon now that verification is skipped
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 2);
+
+    const welcomeCoupon = new Coupon({
+      code: user.welcomeCouponCode,
+      userId: user._id,
+      discountType: 'percentage',
+      discountValue: 20,
+      expiryDate: expiryDate,
+      isActive: true,
+      isUsed: false,
+      couponType: 'welcome',
+      maxUsagePerProduct: 1,
+    });
+
+    await welcomeCoupon.save();
+
+    // Send verification email - SKIPPED
+    /*
     try {
       await sendVerificationEmail({
         email: user.email,
@@ -90,16 +111,17 @@ async function handler(req, res) {
       console.error('Failed to send verification email:', emailError);
       // Continue even if email fails
     }
+    */
 
-    
+
     res.status(201).json({
-      message: "User created successfully! Please check your email for verification code.",
+      message: "User created successfully!",
       userId: user._id.toString(),
       email: user.email,
-      requiresVerification: true,
+      requiresVerification: false,
     });
   } catch (error) {
-        console.error('Signup error:', error);
+    console.error('Signup error:', error);
     res.status(500).json({ message: "Error creating user. Please try again." });
   }
 }
