@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/utils/AuthContext";
 import { toast } from "react-toastify";
 import axios from "axios";
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function ReviewForm({ productId, onReviewSubmitted }) {
-  const { data: session } = useSession();
+  const { user: session } = useAuth();
   const [rating, setRating] = useState(0);
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
@@ -16,7 +16,7 @@ export default function ReviewForm({ productId, onReviewSubmitted }) {
 
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    
+
     if (files.length + images.length > 5) {
       toast.error("Maximum 5 images allowed");
       return;
@@ -94,7 +94,7 @@ export default function ReviewForm({ productId, onReviewSubmitted }) {
       });
 
       toast.success("Review submitted successfully!");
-      
+
       // Reset form
       setRating(0);
       setTitle("");
@@ -126,7 +126,7 @@ export default function ReviewForm({ productId, onReviewSubmitted }) {
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6">
       <h3 className="text-xl font-bold mb-4">Write a Review</h3>
-      
+
       <form onSubmit={handleSubmit}>
         {/* Rating */}
         <div className="mb-4">
@@ -142,11 +142,10 @@ export default function ReviewForm({ productId, onReviewSubmitted }) {
                 className="focus:outline-none transition-transform hover:scale-110"
               >
                 <svg
-                  className={`w-10 h-10 ${
-                    star <= rating
+                  className={`w-10 h-10 ${star <= rating
                       ? 'text-yellow-400 fill-current'
                       : 'text-gray-300 fill-current'
-                  }`}
+                    }`}
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                 >
@@ -202,7 +201,7 @@ export default function ReviewForm({ productId, onReviewSubmitted }) {
           <p className="text-xs text-gray-500 mb-3">
             Help others by sharing photos of your experience (Max 5 images)
           </p>
-          
+
           {/* Image Preview */}
           {images.length > 0 && (
             <div className="grid grid-cols-5 gap-2 mb-3">

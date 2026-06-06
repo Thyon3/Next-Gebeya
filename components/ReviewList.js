@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/utils/AuthContext";
 import ReactStars from "react-rating-stars-component";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -7,7 +7,7 @@ import axios from "axios";
 import { formatDistanceToNow } from "date-fns";
 
 export default function ReviewList({ reviews, onReviewUpdate }) {
-  const { data: session } = useSession();
+  const { user: session } = useAuth();
   const [selectedImage, setSelectedImage] = useState(null);
 
   const handleHelpful = async (reviewId) => {
@@ -78,7 +78,7 @@ export default function ReviewList({ reviews, onReviewUpdate }) {
                 <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
                   {review.userName.charAt(0).toUpperCase()}
                 </div>
-                
+
                 <div>
                   <div className="flex items-center gap-2">
                     <h4 className="font-semibold text-gray-900">{review.userName}</h4>
