@@ -115,24 +115,7 @@ function Layout({ title, children, breadcrumbProps }) {
               <Link href="/admin/dashboard" className="hover:text-blue-600 transition-colors">Sell on eShop</Link>
             </div>
             <div className="flex items-center gap-6">
-              <Menu as="div" className="relative inline-block z-50">
-                <Menu.Button className="flex items-center gap-1 hover:text-blue-600 transition-colors">
-                  Ship to / {currency}
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                </Menu.Button>
-                <Menu.Items className="absolute right-0 w-48 origin-top-right p-2 bg-white dark:bg-gray-800 shadow-2xl rounded-xl mt-2 max-h-96 overflow-y-auto border border-gray-100 dark:border-gray-700">
-                  {Object.keys(currencyMetadata).map((code) => (
-                    <Menu.Item key={code}>
-                      {({ active }) => (
-                        <button onClick={() => changeCurrency(code)} className={`${active ? "bg-blue-50 dark:bg-blue-900/20" : ""} ${currency === code ? "text-blue-600" : ""} w-full text-left px-4 py-2 rounded-lg transition-colors flex items-center justify-between text-xs`}>
-                          <span>{currencyMetadata[code].symbol} {code}</span>
-                          <span className="opacity-50">{currencyMetadata[code].name}</span>
-                        </button>
-                      )}
-                    </Menu.Item>
-                  ))}
-                </Menu.Items>
-              </Menu>
+              <span className="hover:text-blue-600 cursor-pointer transition-colors">Download App</span>
             </div>
           </div>
 
@@ -149,7 +132,30 @@ function Layout({ title, children, breadcrumbProps }) {
               <SearchAutocomplete />
             </div>
 
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-10">
+              {/* Currency Selector */}
+              <div className="hidden xl:block">
+                <Menu as="div" className="relative inline-block z-50">
+                  <Menu.Button className="flex flex-col items-center gap-0.5 text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors group">
+                    <span className="text-xl font-bold">{currencyMetadata[currency]?.symbol || currency}</span>
+                    <span className="text-[10px] font-black uppercase tracking-tighter">{currency} / EN</span>
+                  </Menu.Button>
+                  <Menu.Items className="absolute right-0 w-48 origin-top-right p-2 bg-white dark:bg-gray-800 shadow-2xl rounded-xl mt-2 max-h-96 overflow-y-auto border border-gray-100 dark:border-gray-700">
+                    {Object.keys(currencyMetadata).map((code) => (
+                      <Menu.Item key={code}>
+                        {({ active }) => (
+                          <button onClick={() => changeCurrency(code)} className={`${active ? "bg-blue-50 dark:bg-blue-900/20" : ""} ${currency === code ? "text-blue-600" : ""} w-full text-left px-4 py-2 rounded-lg transition-colors flex items-center justify-between text-xs`}>
+                            <span>{currencyMetadata[code].symbol} {code}</span>
+                            <span className="opacity-50">{currencyMetadata[code].name}</span>
+                          </button>
+                        )}
+                      </Menu.Item>
+                    ))}
+                  </Menu.Items>
+                </Menu>
+              </div>
+
+              {/* Account Dropdown */}
               <div className="hidden lg:block">
                 {status === "loading" ? (
                   <div className="w-10 h-10 rounded-full bg-gray-100 animate-pulse"></div>
@@ -163,11 +169,13 @@ function Layout({ title, children, breadcrumbProps }) {
                           <div className="w-full h-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-600 uppercase">{session.user.name[0]}</div>
                         )}
                       </div>
-                      <span className="text-[10px] font-black uppercase tracking-tighter">Account</span>
+                      <span className="text-[10px] font-black uppercase tracking-tighter truncate max-w-[80px]">
+                        {session.user.name.split(' ')[0]}
+                      </span>
                     </Menu.Button>
                     <Menu.Items className="absolute right-0 w-64 origin-top-right p-2.5 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-700 mt-4 z-50 overflow-hidden">
                       <div className="px-4 py-4 bg-gray-50 dark:bg-gray-900/50 rounded-2xl mb-2">
-                        <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Signed in as</p>
+                        <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Welcome back,</p>
                         <p className="text-sm font-black text-gray-900 dark:text-gray-100 truncate leading-tight">{session.user.name}</p>
                       </div>
                       <div className="space-y-0.5">
@@ -200,13 +208,17 @@ function Layout({ title, children, breadcrumbProps }) {
                     </Menu.Items>
                   </Menu>
                 ) : (
-                  <Link href="/login" className="flex flex-col items-center gap-0.5 text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors">
+                  <Link href="/login" className="flex flex-col items-center gap-0.5 text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors group">
                     <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                    <span className="text-[10px] font-bold uppercase">Login</span>
+                    <div className="flex flex-col items-center leading-none">
+                      <span className="text-[9px] font-bold uppercase opacity-60">Welcome</span>
+                      <span className="text-[11px] font-black uppercase tracking-tighter">Sign In / Join</span>
+                    </div>
                   </Link>
                 )}
               </div>
 
+              {/* Cart */}
               <Link href="/cart" className="flex flex-col items-center gap-0.5 text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors relative">
                 <div className="relative">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
@@ -222,21 +234,29 @@ function Layout({ title, children, breadcrumbProps }) {
             <div className="flex items-center gap-10 h-full">
               <MegaMenu />
               <div className="h-5 w-px bg-gray-200 dark:bg-gray-700"></div>
-              <nav className="flex items-center gap-10 text-[13px] font-black text-gray-700 dark:text-gray-300 uppercase tracking-tight">
-                <Link href="/" className="hover:text-blue-600 transition-colors">Home</Link>
-                <Link href="/search?sortBy=newest" className="hover:text-blue-600 transition-colors flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)] animate-pulse"></span>
-                  New Arrivals
-                </Link>
-                <Link href="/search?sortBy=popular" className="hover:text-blue-600 transition-colors">Best Sellers</Link>
-                <Link href="/order-history" className="hover:text-blue-600 transition-colors">My Orders</Link>
+              <nav className="flex items-center gap-8 text-[13px] font-black text-gray-700 dark:text-gray-300 uppercase tracking-tight">
+                <Link href="/choice" className="hover:text-red-500 transition-colors text-red-600">Choice</Link>
+                <Link href="/search?sortBy=popular" className="hover:text-blue-600 transition-colors">Super Deals</Link>
+                <Link href="/search?category=Business" className="hover:text-blue-600 transition-colors">eShop Business</Link>
+                <Link href="/search?category=Automotive" className="hover:text-blue-600 transition-colors">Automotive</Link>
+                <Link href="/search?category=Appliances" className="hover:text-blue-600 transition-colors">Appliances</Link>
               </nav>
             </div>
-            <div className="flex items-center text-xs font-black text-red-600 gap-1">
-              Special Offer: 20% OFF Welcome Coupon!
+            <div className="flex items-center text-xs font-black text-red-600 gap-1 animate-pulse">
+              Sale Ends: Jun 11, 02:59 EST
             </div>
           </div>
         </header>
+
+        {/* Full Width Banner */}
+        <div className="w-full relative h-[300px] md:h-[400px] lg:h-[450px] bg-blue-600">
+          <img
+            src="/bannerimage/image.png"
+            alt="Promotion Banner"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/40 to-transparent"></div>
+        </div>
 
         {/* Mobile Sidebar */}
         {toggle && (
@@ -257,7 +277,7 @@ function Layout({ title, children, breadcrumbProps }) {
           </div>
         )}
 
-        <main id="main-content" role="main" className="flex-1 container mx-auto mt-8 xl:px-14 md:px-12 px-6">
+        <main id="main-content" role="main" className="flex-1 container mx-auto mt-8 xl:px-14 md:px-12 px-6 text-[fontSize]">
           <Breadcrumb {...breadcrumbProps} />
           {children}
         </main>
