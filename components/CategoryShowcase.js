@@ -6,162 +6,83 @@ export default function CategoryShowcase({ categories = [] }) {
     return null;
   }
 
-  return (
-    <div className="mb-12">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
-            Shop by Category
-          </h2>
-          <p className="text-gray-600 dark:text-gray-300">
-            Browse our wide range of product categories
-          </p>
-        </div>
-        <Link
-          href="/search"
-          className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium flex items-center gap-2 transition-colors"
-        >
-          View All
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="2"
-            stroke="currentColor"
-            className="w-5 h-5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-            />
-          </svg>
-        </Link>
-      </div>
+  // Slice categories for the grid (6 items as in the image)
+  const gridCategories = categories.slice(0, 6);
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
-        {categories.map((category) => (
-          <Link
-            key={category.name}
-            href={`/search?category=${encodeURIComponent(category.name)}`}
-            className="group"
-          >
-            <div className={`${category.bgColor || 'bg-blue-50 dark:bg-blue-900/20'} rounded-xl p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200 dark:border-gray-700 hover:border-transparent`}>
-              <div className="flex flex-col items-center text-center">
-                <div className={`w-16 h-16 rounded-full bg-gradient-to-br ${category.gradient || 'from-blue-500 to-cyan-500'} flex items-center justify-center mb-4 text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                  {category.image ? (
-                    <Image
-                      src={category.image}
-                      alt={category.name}
-                      width={64}
-                      height={64}
-                      className="rounded-full object-cover"
-                    />
-                  ) : (
-                    <span>{category.icon || '📦'}</span>
-                  )}
+  return (
+    <div className="mb-16">
+      <h2 className="text-3xl font-bold text-center text-gray-900 dark:text-white mb-10 mt-16 font-sans">
+        Shop by category
+      </h2>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        {/* LEFT: Featured Brand Card */}
+        <div className="lg:col-span-5 relative rounded-xl overflow-hidden bg-gradient-to-br from-[#a7f3ff] via-[#d0fbff] to-[#f4fdff] p-8 flex flex-col justify-between">
+          <div className="relative z-10">
+            <h3 className="text-5xl font-[900] italic text-gray-900 mb-2 tracking-tighter">Viva</h3>
+            <p className="text-gray-700 font-bold mb-6">Your fashion choice</p>
+            <Link href="/search?category=Clothing">
+              <button className="bg-black text-white px-8 py-3 rounded-full font-bold text-sm hover:scale-105 transition-transform active:scale-95 shadow-lg">
+                Shop now
+              </button>
+            </Link>
+          </div>
+
+          {/* Model Image - Absolute positioned to the right */}
+          <div className="absolute right-0 top-0 bottom-0 w-1/2 overflow-hidden pointer-events-none">
+            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&auto=format&fit=crop&q=60" className="w-full h-full object-cover object-center" alt="" />
+          </div>
+
+          {/* Featured items overlay at the bottom */}
+          <div className="relative z-10 grid grid-cols-3 gap-3 mt-4">
+            {/* Small product cards in the blue box */}
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white rounded p-1 shadow-md">
+                <div className="aspect-[4/5] bg-gray-50 rounded overflow-hidden mb-2">
+                  <img src={categories[i]?.image || `https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=200&q=80`} className="w-full h-full object-cover" />
                 </div>
-                
-                <h3 className="font-bold text-lg text-gray-800 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-1">
-                  {category.name}
-                </h3>
-                
-                {category.description && (
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-                    {category.description}
-                  </p>
-                )}
-                
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {category.productCount} {category.productCount === 1 ? 'item' : 'items'}
-                </p>
-                
-                <div className="mt-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2.5"
-                    stroke="currentColor"
-                    className="w-5 h-5 text-blue-600 dark:text-blue-400"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                    />
-                  </svg>
+                <div className="px-1 pb-1">
+                  <div className="text-[10px] font-bold text-gray-900 leading-none">ETB{Math.floor(Math.random() * 2000 + 1000)}.00</div>
+                  <div className="text-[8px] text-gray-400 line-through">ETB{Math.floor(Math.random() * 4000 + 2000)}.00</div>
+                  <div className="flex items-center gap-0.5 text-[8px] font-bold text-amber-500 mt-1">
+                    <span>★</span> 4.{Math.floor(Math.random() * 9)}
+                    <span className="text-gray-400 font-normal">| 500+ sold</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
+            ))}
+          </div>
+        </div>
 
-      <div className="mt-8 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                className="w-6 h-6 text-blue-600 dark:text-blue-400"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-1">Wide Selection</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Thousands of products across all categories</p>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                className="w-6 h-6 text-purple-600 dark:text-purple-400"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-            </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-1">Best Prices</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Competitive pricing on all items</p>
-          </div>
-          
-          <div className="flex flex-col items-center">
-            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-3">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="currentColor"
-                className="w-6 h-6 text-green-600 dark:text-green-400"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
-                />
-              </svg>
-            </div>
-            <h4 className="font-semibold text-gray-800 dark:text-white mb-1">Fast Delivery</h4>
-            <p className="text-sm text-gray-600 dark:text-gray-400">Quick shipping to your doorstep</p>
-          </div>
+        {/* RIGHT: Category Grid */}
+        <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-4">
+          {gridCategories.map((category) => (
+            <Link
+              key={category.name}
+              href={`/search?category=${encodeURIComponent(category.name)}`}
+              className="group h-[160px]"
+            >
+              <div className="bg-[#f2f2f2] dark:bg-gray-800 rounded-xl p-6 h-full flex justify-between relative overflow-hidden transition-all hover:shadow-lg">
+                <div className="z-10 w-1/2">
+                  <h4 className="text-lg font-bold text-gray-900 dark:text-white leading-tight mb-2 group-hover:text-red-600 transition-colors">
+                    {category.name}
+                  </h4>
+                </div>
+
+                <div className="absolute right-0 bottom-0 top-0 w-1/2 flex items-center justify-center p-2 group-hover:scale-110 transition-transform duration-500">
+                  {category.image ? (
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="h-full w-full object-contain object-right-bottom mix-blend-multiply dark:mix-blend-normal"
+                    />
+                  ) : (
+                    <span className="text-5xl">{category.icon || '📦'}</span>
+                  )}
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

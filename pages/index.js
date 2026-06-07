@@ -116,15 +116,21 @@ export default function Home({ featuredProducts = [], products = [], brands = []
           {isLoading ? (
             <SkeletonProductGrid count={siteSettings.latestProductsCount} />
           ) : (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
-              {products.slice(0, siteSettings.latestProductsCount).map((product) => (
-                <ProductItem
-                  product={product}
-                  key={product.slug}
-                  addToCartHandler={addToCartHandler}
-                  allProducts={products}
-                />
-              ))}
+            <div className="relative">
+              <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
+                {products.slice(0, siteSettings.latestProductsCount).map((product) => (
+                  <div
+                    key={product.slug}
+                    className="flex-none w-72 snap-start"
+                  >
+                    <ProductItem
+                      product={product}
+                      addToCartHandler={addToCartHandler}
+                      allProducts={products}
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
