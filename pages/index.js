@@ -7,6 +7,7 @@ import Testimonials from "@/components/Testimonials";
 import NewsletterSection from "@/components/NewsletterSection";
 import BrandShowcase from "@/components/BrandShowcase";
 import CategoryShowcase from "@/components/CategoryShowcase";
+import SuperBuyerSection from "@/components/SuperBuyerSection";
 import { SkeletonHeroCarousel, SkeletonProductGrid } from "@/components/skeletons";
 import Product from "@/models/Product";
 import Category from "@/models/Category";
@@ -135,6 +136,9 @@ export default function Home({ featuredProducts = [], products = [], brands = []
           )}
         </div>
       )}
+
+      {/* SuperBuyer Dynamic Section */}
+      <SuperBuyerSection />
 
       {/* Trust Badges */}
       <TrustBadges />
