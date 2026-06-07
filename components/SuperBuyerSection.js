@@ -4,6 +4,13 @@ import axios from "axios";
 import { Store } from "@/utils/Store";
 import { currencyMetadata } from "@/utils/currency";
 
+const BG_IMAGES = [
+    "/shopybybrand.jpg",
+    "/shopbybrand1.jpg",
+    "/shopbybrand2.jpg",
+    "/shopbybrand3.jpg",
+];
+
 // --- Mini Product Card ---
 function MiniProductCard({ product, currencySymbol }) {
     if (!product) {
@@ -61,6 +68,14 @@ export default function SuperBuyerSection() {
     const [bulkProducts, setBulkProducts] = useState(Array(3).fill(null));
     const [buyAgainProducts, setBuyAgainProducts] = useState(Array(3).fill(null));
     const [loading, setLoading] = useState(true);
+    const [currentBg, setCurrentBg] = useState(0);
+
+    useEffect(() => {
+        const bgInterval = setInterval(() => {
+            setCurrentBg((prev) => (prev + 1) % BG_IMAGES.length);
+        }, 4000);
+        return () => clearInterval(bgInterval);
+    }, []);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -85,16 +100,21 @@ export default function SuperBuyerSection() {
 
     return (
         <div className="relative w-full rounded-2xl overflow-hidden mb-12">
-            {/* Background Image */}
-            <div
-                className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-                style={{ backgroundImage: "url('/shopybybrand.jpg')" }}
-            />
+            {/* Background Images with Cross-fade */}
+            {BG_IMAGES.map((img, index) => (
+                <div
+                    key={img}
+                    className={`absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 ease-in-out ${currentBg === index ? "opacity-100" : "opacity-0"
+                        }`}
+                    style={{ backgroundImage: `url('${img}')` }}
+                />
+            ))}
+
             {/* Dark overlay for readability */}
             <div className="absolute inset-0 bg-black/50" />
 
             {/* Content */}
-            <div className="relative z-10 px-6 md:px-10 pt-8 pb-0">
+            <div className="relative z-10 px-6 md:px-10 pt-8 pb-12">
                 {/* Top Row: Brand + Stats */}
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
                     {/* Left: Branding */}
@@ -137,7 +157,7 @@ export default function SuperBuyerSection() {
                 {/* Bottom Row: Two product panel cards */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Panel 1: Bulk Saver Hub */}
-                    <div className="bg-white rounded-t-xl p-4 shadow-xl">
+                    <div className="bg-white rounded-xl p-4 shadow-xl">
                         <h3 className="text-[15px] font-black text-gray-900 text-center mb-4">Bulk Saver Hub</h3>
                         <div className="flex gap-3">
                             {bulkProducts.map((product, i) => (
@@ -151,7 +171,7 @@ export default function SuperBuyerSection() {
                     </div>
 
                     {/* Panel 2: Buy Again */}
-                    <div className="bg-white rounded-t-xl p-4 shadow-xl">
+                    <div className="bg-white rounded-xl p-4 shadow-xl">
                         <h3 className="text-[15px] font-black text-gray-900 text-center mb-4">Buy again</h3>
                         <div className="flex gap-3">
                             {buyAgainProducts.map((product, i) => (
