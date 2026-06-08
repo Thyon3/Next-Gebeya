@@ -110,28 +110,22 @@ export default function Home({ featuredProducts = [], products = [], brands = []
         )
       )}
 
-      {/* Latest Products - Moved to top */}
+      {/* Latest Products - Vertical Grid */}
       {siteSettings.latestProductsEnabled && (
         <div className="mb-12 mt-10">
           <h1 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-100">{siteSettings.latestProductsHeading}</h1>
           {isLoading ? (
             <SkeletonProductGrid count={siteSettings.latestProductsCount} />
           ) : (
-            <div className="relative">
-              <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory">
-                {products.slice(0, siteSettings.latestProductsCount).map((product) => (
-                  <div
-                    key={product.slug}
-                    className="flex-none w-72 snap-start"
-                  >
-                    <ProductItem
-                      product={product}
-                      addToCartHandler={addToCartHandler}
-                      allProducts={products}
-                    />
-                  </div>
-                ))}
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+              {products.map((product) => (
+                <ProductItem
+                  product={product}
+                  key={product.slug}
+                  addToCartHandler={addToCartHandler}
+                  allProducts={products}
+                />
+              ))}
             </div>
           )}
         </div>
