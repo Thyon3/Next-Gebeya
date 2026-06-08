@@ -95,7 +95,7 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
   return (
     <>
       <article
-        className="group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-transparent hover:border-gray-100 dark:hover:border-gray-700 font-sans scale-[0.98]"
+        className="group relative bg-white dark:bg-gray-800 rounded-lg overflow-hidden transition-all duration-300 hover:shadow-xl border border-transparent hover:border-gray-100 dark:hover:border-gray-700 font-sans scale-[0.95]"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
         aria-label={`${product.name} product card`}
@@ -111,8 +111,8 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
                 src={product.image}
                 alt={product.name}
                 className={`object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
-                height={400}
-                width={400}
+                height={280}
+                width={280}
                 onLoad={() => setImageLoaded(true)}
               />
             </div>
@@ -148,7 +148,7 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
         </div>
 
         {/* Info Section */}
-        <div className="p-2">
+        <div className="p-1.5">
           {/* Title - Compact */}
           <Link href={`/product/${product.slug}`}>
             <h2 className="text-[12px] leading-[1.2] text-gray-700 dark:text-gray-300 line-clamp-1 mb-1 font-normal group-hover:text-red-500 transition-colors">
@@ -161,7 +161,7 @@ export default function ProductItem({ product, addToCartHandler, allProducts }) 
             <span className="text-[13px] font-black text-black dark:text-white">
               {currencySymbol}
             </span>
-            <span className="text-[17px] font-black text-black dark:text-white -ml-0.5">
+            <span className="text-[15px] font-black text-black dark:text-white -ml-0.5">
               {salePrice.toLocaleString()}
             </span>
             {hasDiscount && (
