@@ -13,6 +13,7 @@ import SearchAutocomplete from "./SearchAutocomplete";
 import Footer from "./Footer";
 import MegaMenu from "./MegaMenu";
 import Breadcrumb from "./Breadcrumb";
+import DynamicBanner from "./DynamicBanner";
 import { currencyMetadata, setDefaultCurrency, fetchExchangeRates } from "@/utils/currency";
 
 function Layout({ title, children, breadcrumbProps, hideBanner }) {
@@ -249,17 +250,8 @@ function Layout({ title, children, breadcrumbProps, hideBanner }) {
           </div>
         </header>
 
-        {/* Full Width Banner */}
-        {!hideBanner && (
-          <div className="w-full relative h-[180px] md:h-[240px] lg:h-[280px] bg-blue-600 overflow-hidden">
-            <img
-              src="/bannerimage/image.png"
-              alt="Promotion Banner"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-900/30 to-transparent"></div>
-          </div>
-        )}
+        {/* Dynamic Multi-Image Banner */}
+        {!hideBanner && <DynamicBanner />}
 
         {/* Mobile Sidebar */}
         {toggle && (
