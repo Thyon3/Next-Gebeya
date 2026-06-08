@@ -166,7 +166,7 @@ function Layout({ title, children, breadcrumbProps, hideBanner }) {
                 ) : session?.user ? (
                   <Menu as="div" className="relative">
                     <Menu.Button className="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors group">
-                      <div className="w-9 h-9 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700">
+                      <div className="w-9 h-9 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100">
                         {session.user.profileImage ? (
                           <img src={session.user.profileImage} alt="" className="w-full h-full object-cover" />
                         ) : (
@@ -178,29 +178,150 @@ function Layout({ title, children, breadcrumbProps, hideBanner }) {
                         <span className="text-[13px] font-bold text-black dark:text-white truncate max-w-[80px]">{session.user.name.split(' ')[0]}</span>
                       </div>
                     </Menu.Button>
-                    <Menu.Items className="absolute right-0 w-64 origin-top-right p-2.5 bg-white dark:bg-gray-800 shadow-2xl rounded-2xl border border-gray-100 dark:border-gray-700 mt-4 z-50 overflow-hidden">
-                      {/* ... existing menu items ... */}
-                      <div className="px-4 py-4 bg-gray-50 dark:bg-gray-900/50 rounded-2xl mb-2">
-                        <p className="text-[10px] uppercase font-bold text-gray-400 mb-1">Welcome back,</p>
-                        <p className="text-sm font-black text-gray-900 dark:text-gray-100 truncate leading-tight">{session.user.name}</p>
+                    <Menu.Items className="absolute right-0 w-96 origin-top-right bg-white dark:bg-gray-800 shadow-2xl rounded-lg border border-gray-200 dark:border-gray-700 mt-3 z-50 overflow-hidden">
+                      {/* Sign in / Register buttons */}
+                      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+                        <Link href="/login">
+                          <button className="w-full bg-black text-white text-base font-semibold py-3.5 rounded-full hover:bg-gray-800 transition-colors mb-2">
+                            Sign in
+                          </button>
+                        </Link>
+                        <Link href="/register">
+                          <button className="w-full text-gray-500 text-sm font-medium hover:text-gray-700 transition-colors">
+                            Register
+                          </button>
+                        </Link>
                       </div>
-                      <div className="space-y-0.5">
-                        <Menu.Item><DropdownLink href="/profile">My Profile</DropdownLink></Menu.Item>
-                        <Menu.Item><DropdownLink href="/order-history">My Orders</DropdownLink></Menu.Item>
-                        <Menu.Item><DropdownLink href="/wishlist">Wishlist ({wishlistItemsCount})</DropdownLink></Menu.Item>
-                        <Menu.Item><DropdownLink href="/compare">Compare ({compareItemsCount})</DropdownLink></Menu.Item>
+
+                      {/* Menu items */}
+                      <div className="py-2">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/order-history" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+                              My Orders
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/coins" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                              My Coins
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/messages" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" /></svg>
+                              Message Center
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/payment" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                              Payment
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/wishlist" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                              Wish List
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/coupons" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" /></svg>
+                              My Coupons
+                            </Link>
+                          )}
+                        </Menu.Item>
                       </div>
-                      <div className="h-px bg-gray-100 dark:bg-gray-700 my-2"></div>
-                      <button onClick={toggleDarkMode} className="w-full text-left px-4 py-3 text-[13px] font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-xl flex justify-between items-center transition-all">
-                        {darkMode ? "Light Mode" : "Dark Mode"}
-                        <div className={`w-10 h-5 rounded-full relative transition-all duration-300 ${darkMode ? 'bg-blue-600' : 'bg-gray-200'}`}>
-                          <div className={`absolute top-1 w-3 h-3 rounded-full bg-white transition-all shadow-sm ${darkMode ? 'right-1' : 'left-1'}`}></div>
+
+                      {/* Settings Section */}
+                      <div className="border-t border-gray-200 dark:border-gray-700 py-2">
+                        <div className="px-5 py-2">
+                          <p className="text-xs font-semibold text-gray-400 uppercase">Settings</p>
                         </div>
-                      </button>
-                      <div className="h-px bg-gray-100 dark:bg-gray-700 my-2"></div>
-                      <Menu.Item>
-                        <button onClick={logoutClickHandler} className="w-full text-left px-4 py-3 text-sm font-black text-red-600 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-xl transition-all">Logout</button>
-                      </Menu.Item>
+                        
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/profile" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                              Settings
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/business" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
+                              eShop Business
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/ds-center" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+                              DS Center
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/seller" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>
+                              Seller Log In
+                            </Link>
+                          )}
+                        </Menu.Item>
+                      </div>
+
+                      {/* Help Section */}
+                      <div className="border-t border-gray-200 dark:border-gray-700 py-2">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/help" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                              Help Center
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link href="/disputes" className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                              Disputes & Reports
+                            </Link>
+                          )}
+                        </Menu.Item>
+
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button onClick={logoutClickHandler} className={`flex items-center gap-3 px-5 py-3 text-sm font-medium text-red-600 w-full ${active ? 'bg-gray-50 dark:bg-gray-700/50' : ''}`}>
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+                              Logout
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </div>
                     </Menu.Items>
                   </Menu>
                 ) : (
@@ -251,7 +372,7 @@ function Layout({ title, children, breadcrumbProps, hideBanner }) {
         </header>
 
         {/* Dynamic Multi-Image Banner */}
-        {!hideBanner && <DynamicBanner />}
+        {router.pathname === '/' && <DynamicBanner />}
 
         {/* Mobile Sidebar */}
         {toggle && (
