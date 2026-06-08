@@ -46,7 +46,12 @@ const handler = async (req, res) => {
       process.env.CLOUDINARY_SECRET
     );
 
-    res.status(200).json({ signature, timestamp });
+    res.status(200).json({ 
+      signature, 
+      timestamp,
+      cloudName: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+      apiKey: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY
+    });
   } catch (error) {
     console.error('=== CLOUDINARY SIGN ERROR ===');
     console.error('Error:', error);

@@ -357,25 +357,30 @@ function Layout({ title, children, breadcrumbProps, hideBanner }) {
           </div>
 
           {/* Bottom Nav Row */}
-          <div className="hidden md:flex h-14 items-center">
-            <div className="max-w-[1600px] mx-auto px-4 flex items-center gap-6">
-              <div className="flex items-center">
+          <div className="hidden md:flex h-10 items-center bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800">
+            <div className="max-w-[1400px] mx-auto w-full flex items-center" style={{ paddingLeft: '24px', paddingRight: '24px' }}>
+              {/* All Categories Button - aligned with logo */}
+              <div className="flex items-center flex-shrink-0">
                 <MegaMenu customTrigger={true} />
               </div>
 
-              <nav className="flex items-center gap-10 text-[14px] font-bold text-black dark:text-white">
-                <Link href="/choice" className="text-[#ff4e50] hover:opacity-80 transition-opacity">Choice</Link>
-                <Link href="/search?sortBy=popular" className="hover:text-amber-500 transition-colors">SuperDeals</Link>
-                <Link href="/search?category=Business" className="hover:text-[#ff4e50] transition-colors whitespace-nowrap">eShop Business</Link>
-                <Link href="/search?category=Automotive" className="hover:text-[#ff4e50] transition-colors">Automotive</Link>
-                <Link href="/search?category=Appliances" className="hover:text-[#ff4e50] transition-colors">Appliances</Link>
-                <Link href="/search?category=Women's Clothing" className="hidden lg:block hover:text-blue-600 transition-colors">Women's Clothing</Link>
-                <Link href="/search?category=Men's Clothing" className="hidden xl:block hover:text-blue-600 transition-colors">Men's Clothing</Link>
-                <Link href="/search?category=Furniture" className="hidden 2xl:block hover:text-blue-600 transition-colors whitespace-nowrap">Furniture</Link>
-                <div className="flex items-center gap-1 text-gray-400 hover:text-gray-900 cursor-pointer">
-                  <span>More</span>
-                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" /></svg>
-                </div>
+              {/* Navigation Links with more spacing */}
+              <nav className="flex items-center gap-8 text-base font-medium ml-10">
+                <Link href="/choice" className="text-red-500 hover:text-red-600 transition-colors">Choice</Link>
+                <Link href="/search?sortBy=popular" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">SuperDeals</Link>
+                <Link href="/search?category=Business" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors whitespace-nowrap">eShop Business</Link>
+                <Link href="/search?category=Automotive" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Automotive</Link>
+                <Link href="/search?category=Appliances" className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Appliances</Link>
+                <Link href="/search?category=Women's Clothing" className="hidden lg:block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Women's Clothing</Link>
+                <Link href="/search?category=Men's Clothing" className="hidden xl:block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Men's Clothing</Link>
+                <Link href="/search?category=Toys" className="hidden 2xl:block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Toys & Games</Link>
+                <Link href="/search?category=Furniture" className="hidden 2xl:block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors">Furniture</Link>
+                <button className="flex items-center gap-1 text-gray-500 hover:text-gray-900 dark:hover:text-white transition-colors ml-auto">
+                  <span className="text-base font-medium">More</span>
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
               </nav>
             </div>
           </div>
