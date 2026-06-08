@@ -165,32 +165,42 @@ function Layout({ title, children, breadcrumbProps, hideBanner }) {
                   <div className="w-10 h-10 rounded-full bg-gray-100 animate-pulse"></div>
                 ) : session?.user ? (
                   <Menu as="div" className="relative">
-                    <Menu.Button className="flex items-center gap-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 transition-colors group">
-                      <div className="w-9 h-9 rounded-full overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-100">
+                    <Menu.Button className="flex items-center gap-1.5 hover:opacity-70 transition-opacity">
+                      <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-300">
                         {session.user.profileImage ? (
                           <img src={session.user.profileImage} alt="" className="w-full h-full object-cover" />
                         ) : (
-                          <div className="w-full h-full bg-gray-100 flex items-center justify-center text-xs font-bold text-gray-400"><svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg></div>
+                          <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-sm font-bold">
+                            {session.user.name.charAt(0).toUpperCase()}
+                          </div>
                         )}
                       </div>
-                      <div className="flex flex-col items-start leading-none -space-y-0.5">
-                        <span className="text-[10px] font-medium text-gray-500">Welcome</span>
-                        <span className="text-[13px] font-bold text-black dark:text-white truncate max-w-[80px]">{session.user.name.split(' ')[0]}</span>
+                      <div className="text-xs">
+                        <span className="text-gray-500">Welcome,</span>
+                        <span className="font-medium text-gray-900 dark:text-white ml-1">{session.user.name.split(' ')[0]}</span>
                       </div>
+                      <svg className="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
                     </Menu.Button>
                     <Menu.Items className="absolute right-0 w-96 origin-top-right bg-white dark:bg-gray-800 shadow-2xl rounded-lg border border-gray-200 dark:border-gray-700 mt-3 z-50 overflow-hidden">
-                      {/* Sign in / Register buttons */}
-                      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-                        <Link href="/login">
-                          <button className="w-full bg-black text-white text-base font-semibold py-3.5 rounded-full hover:bg-gray-800 transition-colors mb-2">
-                            Sign in
-                          </button>
-                        </Link>
-                        <Link href="/register">
-                          <button className="w-full text-gray-500 text-sm font-medium hover:text-gray-700 transition-colors">
-                            Register
-                          </button>
-                        </Link>
+                      {/* User Info Header - Only show when logged in */}
+                      <div className="p-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-blue-500">
+                            {session.user.profileImage ? (
+                              <img src={session.user.profileImage} alt="" className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-lg font-bold">
+                                {session.user.name.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                          </div>
+                          <div>
+                            <p className="text-sm font-bold text-gray-900 dark:text-gray-100">{session.user.name}</p>
+                            <p className="text-xs text-gray-500">{session.user.email}</p>
+                          </div>
+                        </div>
                       </div>
 
                       {/* Menu items */}
