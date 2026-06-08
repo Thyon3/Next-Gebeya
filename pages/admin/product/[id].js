@@ -92,25 +92,26 @@ export default function AdminProductEdit() {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME) {
-      toast.error("Cloudinary is not configured.");
-      return;
-    }
-
-    const url = `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/upload`;
-    console.log('Uploading to Cloudinary:', url);
-
     try {
       dispatch({ type: "UPLOAD_REQUEST" });
 
+      // Get signature from backend
       const { data: signData } = await axios.get("/api/admin/cloudinary-sign");
-      const { signature, timestamp } = signData;
+      console.log('Sign data received:', signData);
+
+      if (!signData.cloudName || !signData.apiKey) {
+        throw new Error("Cloudinary configuration is missing");
+      }
+
+      const { signature, timestamp, cloudName, apiKey } = signData;
+      const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+      console.log('Uploading to:', url);
 
       const formData = new FormData();
-      formData.append("timestamp", timestamp);
-      formData.append("signature", signature);
-      formData.append("api_key", process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY);
       formData.append("file", file);
+      formData.append("timestamp", timestamp);
+      formData.append("api_key", apiKey);
+      formData.append("signature", signature);
 
       const { data } = await axios.post(url, formData);
 
@@ -125,8 +126,10 @@ export default function AdminProductEdit() {
       toast.success("File uploaded successfully");
     } catch (err) {
       dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
-      toast.error(getError(err));
+      const errorMessage = err.response?.data?.error?.message || err.message || "Upload failed";
+      toast.error(errorMessage);
       console.error("Upload error:", err);
+      console.error("Error response:", err.response?.data);
     }
   };
 

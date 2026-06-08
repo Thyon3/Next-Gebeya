@@ -201,7 +201,7 @@ function Cart() {
             <h2 className="text-xl font-bold mb-4">Order Summary</h2>
 
             {/* Coupon Section */}
-            {session && (
+            {session?.user && (
               <div className="mb-4 pb-4 border-b">
                 <label className="block text-sm font-semibold mb-2">
                   Have a coupon code?
